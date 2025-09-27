@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>画图(qwy)</title>
+</head>
+
+<style>
+	.nav {
+		border: 0.2vh solid gainsboro;
+		margin-top: 5vh;
+		margin-bottom: 5vh;
+		height: 10vh;
+		place-items: center;
+		display: grid;
+		padding: 0px;
+	}
+
+	.navtxt {
+		font-size: 4vh;
+		margin-left: 5vh;
+		margin-right: 5vh;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		color: rgb(75, 75, 75);
+	}
+
+	.navp {
+		margin: 0px;
+		padding: 0px;
+		border: 0px;
+	}
+
+	.text {
+		border: 0.2vh solid black;
+		margin-top: 1vh;
+		margin-bottom: 1vh;
+		font-size: 3vh;
+	}
+
+	.canvas {
+		border: 1px solid black;
+	}
+
+	.button {
+		width: 50px;
+		height: 50px;
+	}
+</style>
+
+<body>
+
+	<div class="nav">
+		<p class="navp">
+			<a href="https://www.qwy.ac" target="_blank" class="navtxt">首页</a>
+			<a href="https://www.qwy.ac/app" target="_blank" class="navtxt">应用</a>
+		</p>
+	</div>
+	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
+		Qianwenyu 的网站 </marquee>
+
+	<button class="button" onclick="color='red'">红</button>
+	<button class="button" onclick="color='green'">绿</button>
+	<button class="button" onclick="color='blue'">蓝</button>
+	<button class="button" onclick="color='black'">黑</button>
+	<button class="button" onclick="color='white'">橡皮</button>
+	<br>
+	<canvas class="canvas" id="c" width="1250px" height="600px" />
+
+	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+	<script>
+		document.getElementById('c').height = document.documentElement.clientHeight - 75;
+		document.getElementById('c').width = document.documentElement.clientWidth - 20;
+	</script>
+</body>
+
+<script>
+
+	let color = 'black';
+	let canvas = document.getElementById('c');
+	let ctx = canvas.getContext('2d');
+	let devicePixelRatio = window.devicePixelRatio || 1;
+	let backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+		ctx.mozBackingStorePixelRatio ||
+		ctx.msBackingStorePixelRatio ||
+		ctx.oBackingStorePixelRatio ||
+		ctx.backingStorePixelRatio || 1;
+	let ratio = devicePixelRatio / backingStoreRatio;
+
+	if (devicePixelRatio !== backingStoreRatio) {
+
+		let oldWidth = canvas.width;
+		let oldHeight = canvas.height;
+
+		canvas.width = oldWidth * ratio;
+		canvas.height = oldHeight * ratio;
+
+		canvas.style.width = oldWidth + 'px';
+		canvas.style.height = oldHeight + 'px';
+
+		ctx.scale(ratio, ratio);
+	}
+	let pos = { x: 0, y: 0 };
+
+	document.addEventListener('mousedown', reposition);
+	document.addEventListener('mouseenter', reposition);
+	document.addEventListener('mousemove', draw);
+
+	function reposition(ev) {
+		let rc = canvas.getBoundingClientRect();
+		pos.x = ev.clientX - rc.left;
+		pos.y = ev.clientY - rc.top;
+	}
+
+	function draw(ev) {
+		if (ev.buttons !== 1) return;
+
+		ctx.beginPath();
+		ctx.lineWidth = 1;
+		if (color == 'white')
+			ctx.lineWidth *= 40;
+		ctx.strokeStyle = color;
+		ctx.moveTo(pos.x, pos.y);
+		reposition(ev);
+		ctx.lineTo(pos.x, pos.y);
+		ctx.stroke();
+	}
+
+</script>
+
+</html>
