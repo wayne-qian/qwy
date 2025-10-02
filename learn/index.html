@@ -10,7 +10,6 @@
 </head>
 
 <style>
-	
 	.nav {
 		border: 0.2vh solid gainsboro;
 		margin-top: 2vh;
@@ -62,23 +61,28 @@
 
 	<div class="nav">
 		<p class="navp">
-			<a href="https://www.qwy.ac"  class="navtxt">首页</a>
-			<a href="https://www.qwy.ac/app"  class="navtxt">应用</a>
-			<a href="https://www.qwy.ac/learn"  class="navtxt">学习</a>
-			<a href="https://www.qwy.ac/sug"  class="navtxt">推荐</a>
+			<a href="https://www.qwy.ac" class="navtxt">首页</a>
+			<a href="https://www.qwy.ac/app" class="navtxt">应用</a>
+			<a href="https://www.qwy.ac/learn" class="navtxt">学习</a>
+			<a href="https://www.qwy.ac/sug" class="navtxt">推荐</a>
 		</p>
 	</div>
 	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
 		Qianwenyu 的网站 </marquee>
 	<br>
-	<div>
-		<a class="app" href="./ch" >语文</a>
-		<a class="app" href="./en" >英语</a>
-		<a class="app" href="./hw" >作业</a>
+	<input id="in" type="text" placeholder="学校班级">
+	<button id="btn">确认</button>
+	<div id="div">
 	</div>
 	<br>
-
 	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+	<script>
+		alert('请输入我的班级(用数字表示, 验证是否为同学)');
+		document.getElementById('btn').onclick = function () {
+			if (document.getElementById('in').value == (1 << 2) * 19)
+				document.getElementById('div').innerHTML = '<a class="app" href = "./ch">语文</a><a class="app" href="./en">英语</a><a class="app" href="./hw">作业</a>';
+		}
+	</script>
 </body>
 
 </html>
