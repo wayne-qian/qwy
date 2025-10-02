@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>2048(qwy)</title>
+	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
+	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+</head>
+<style>
+	.nav {
+		border: 0.2vh solid gainsboro;
+		margin-top: 2vh;
+		margin-bottom: 5vh;
+		height: 10vh;
+		place-items: center;
+		display: grid;
+		padding: 0px;
+		border-radius: 10vh;
+		background-color: rgba(80, 80, 80, 0.5);
+		position: -webkit-sticky;
+		top: 5vh;
+		float: top;
+	}
+
+	.navtxt {
+		font-size: 4vh;
+		margin-left: 5vh;
+		margin-right: 5vh;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		color: rgb(75, 75, 75);
+	}
+
+	.navp {
+		margin: 0px;
+		padding: 0px;
+		border: 0px;
+	}
+
+	.text {
+		border: 0.2vh solid black;
+		margin-top: 1vh;
+		margin-bottom: 1vh;
+		font-size: 3vh;
+	}
+
+	p {
+		font-size: 5vh;
+	}
+
+	table,
+	td {
+		border: 0.2vh solid grey;
+		border-radius: 2vh;
+	}
+
+	table {
+		padding: 0px;
+		background-color: rgb(120, 120, 120);
+	}
+
+	td {
+		font-size: 5vh;
+		text-align: center;
+		vertical-align: center;
+		height: 15vh;
+		width: 15vh;
+	}
+
+	._1 {
+		background-color: rgb(200, 200, 200);
+	}
+
+	._2 {
+		background-color: rgb(255, 255, 255);
+	}
+
+	._4 {
+		background-color: rgb(255, 240, 196);
+	}
+
+	._8 {
+		background-color: rgb(255, 180, 180);
+	}
+
+	._16 {
+		background-color: rgb(255, 140, 140);
+	}
+
+	._32 {
+		background-color: rgb(255, 100, 100);
+	}
+
+	._64 {
+		background-color: rgb(255, 60, 60);
+	}
+
+	._128 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._256 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._512 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._1024 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._2048 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._4096 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._8192 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._16384 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._32768 {
+		background-color: rgb(255, 240, 0);
+	}
+
+	._65536 {
+		background-color: rgb(255, 240, 0);
+	}
+</style>
+
+<body>
+	<div class="nav">
+		<p class="navp">
+			<a href="https://www.qwy.ac" class="navtxt">首页</a>
+			<a href="https://www.qwy.ac/app" class="navtxt">应用</a>
+			<a href="https://www.qwy.ac/learn" class="navtxt">学习</a>
+			<a href="https://www.qwy.ac/sug" class="navtxt">推荐</a>
+		</p>
+	</div>
+	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
+		Qianwenyu 的网站 </marquee>
+	<center>
+		<p id="p">
+			Score :
+		</p>
+		<table id="table">
+		</table>
+	</center>
+	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+</body>
+<script>
+	let grid = new Array(5);
+	let score = 0;
+	setInterval(() => {
+		document.getElementById('p').innerText = 'Score : ' + score;
+		for (let i = 1; i <= 4; i++)
+			for (let j = 1; j <= 4; j++) {
+				let td = document.getElementById('td' + (4 * i + j));
+				td.className = '_' + grid[i][j];
+				td.innerText = (grid[i][j] == 1 ? '' : grid[i][j]);
+			}
+	}, 100);
+	for (let i = 0; i <= 5; i++) {
+		grid[i] = new Array(5);
+		grid[i][0] = grid[i][5] = 0;
+		for (let j = 1; j <= 4; j++)
+			if (i > 0 && i < 5)
+				grid[i][j] = 1;
+			else
+				grid[i][j] = 0;
+	}
+	for (let i = 1; i <= 4; i++) {
+		let table = document.getElementById('table');
+		let tr = document.createElement('tr');
+		let id = document.createAttribute('id');
+		id.value = 'tr' + i;
+		tr.setAttributeNode(id);
+		table.appendChild(tr);
+		for (let j = 1; j <= 4; j++) {
+			let td = document.createElement('td');
+			let id2 = document.createAttribute('id');
+			id2.value = 'td' + (i * 4 + j);
+			td.setAttributeNode(id2);
+			tr.appendChild(td);
+			td.className = '_1';
+		}
+	}
+	function move(dir) {
+		let ct = 0;
+		if (dir.key == 'a') {
+			for (let i = 1; i <= 4; i++) {
+				for (let j = 1; j <= 4; j++) {
+					let x = j;
+					if (grid[i][j] != 1)
+						while (grid[i][x - 1] == 1)
+							grid[i][x - 1] = grid[i][x], grid[i][x] = 1, x--, ct++;
+				}
+				for (let j = 1; j < 4; j++)
+					if (grid[i][j] == grid[i][j + 1] && grid[i][j] != 1)
+						grid[i][j] *= 2, grid[i][j + 1] = 1, score += grid[i][j], ct++;
+				for (let j = 1; j <= 4; j++) {
+					let x = j;
+					if (grid[i][j] != 1)
+						while (grid[i][x - 1] == 1)
+							grid[i][x - 1] = grid[i][x], grid[i][x] = 1, x--, ct++;
+				}
+			}
+		}
+		if (dir.key == 'w') {
+			for (let i = 1; i <= 4; i++) {
+				for (let j = 1; j <= 4; j++) {
+					let x = j;
+					if (grid[j][i] != 1)
+						while (grid[x - 1][i] == 1)
+							grid[x - 1][i] = grid[x][i], grid[x][i] = 1, x--, ct++;
+				}
+				for (let j = 1; j < 4; j++)
+					if (grid[j][i] == grid[j + 1][i] && grid[j][i] != 1)
+						grid[j][i] *= 2, grid[j + 1][i] = 1, score += grid[j][i], ct++;
+				for (let j = 1; j <= 4; j++) {
+					let x = j;
+					if (grid[j][i] != 1)
+						while (grid[x - 1][i] == 1)
+							grid[x - 1][i] = grid[x][i], grid[x][i] = 1, x--, ct++;
+				}
+			}
+		}
+		if (dir.key == 'd') {
+			for (let i = 4; i >= 1; i--) {
+				for (let j = 4; j >= 1; j--) {
+					let x = j;
+					if (grid[i][j] != 1)
+						while (grid[i][x + 1] == 1)
+							grid[i][x + 1] = grid[i][x], grid[i][x] = 1, x++, ct++;
+				}
+				for (let j = 4; j > 1; j--)
+					if (grid[i][j] == grid[i][j - 1] && grid[i][j] != 1)
+						grid[i][j] *= 2, grid[i][j - 1] = 1, score += grid[i][j], ct++;
+				for (let j = 4; j >= 1; j--) {
+					let x = j;
+					if (grid[i][j] != 1)
+						while (grid[i][x + 1] == 1)
+							grid[i][x + 1] = grid[i][x], grid[i][x] = 1, x++, ct++;
+				}
+			}
+		}
+		if (dir.key == 's') {
+			for (let i = 4; i >= 1; i--) {
+				for (let j = 4; j >= 1; j--) {
+					let x = j;
+					if (grid[j][i] != 1)
+						while (grid[x + 1][i] == 1)
+							grid[x + 1][i] = grid[x][i], grid[x][i] = 1, x++, ct++;
+				}
+				for (let j = 4; j > 1; j--)
+					if (grid[j][i] == grid[j - 1][i] && grid[j][i] != 1)
+						grid[j][i] *= 2, grid[j - 1][i] = 1, score += grid[j][i], ct++;
+				for (let j = 4; j >= 1; j--) {
+					let x = j;
+					if (grid[j][i] != 1)
+						while (grid[x + 1][i] == 1)
+							grid[x + 1][i] = grid[x][i], grid[x][i] = 1, x++, ct++;
+				}
+			}
+		}
+		return ct;
+	}
+	function create() {
+		let ct = 0;
+		for (let i = 1; i <= 4; i++)
+			for (let j = 1; j <= 4; j++)
+				if (grid[i][j] == 1)
+					ct++;
+		if (ct > 0) {
+			let ran = Math.floor(Math.random() * 10000) % ct;
+			ct = 0;
+			for (let i = 1; i <= 4; i++)
+				for (let j = 1; j <= 4; j++) {
+					if (grid[i][j] == 1) {
+						if (ct == ran) {
+							grid[i][j] = ((Math.random() < 0.8) ? 2 : 4);
+							return;
+						}
+						ct++;
+					}
+				}
+		}
+	}
+	create();
+	var time = 0;
+	document.addEventListener('keypress', function (event) {
+		if (!time) {
+			time = 1;
+			setTimeout(() => {
+				if ((event.key == 'a' || event.key == 'w' || event.key == 'd' || event.key == 's') && move(event))
+					create();
+				time = 0;
+			}, 10);
+		}
+	})
+</script>
+
+</html>
