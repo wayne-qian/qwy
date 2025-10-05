@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>妈妈生日快乐</title>
+</head>
+
+<style>
+	#text,
+	#en {
+		font-size: 10vw;
+	}
+
+	div {
+		border: 0.5px solid black;
+		border-radius: 4vw;
+	}
+
+	#time {
+		font-size: 6vw;
+	}
+</style>
+
+<body>
+	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
+		Qianwenyu 的网站 </marquee>
+
+	<center>
+		<div id="background">
+			<p id="text">
+				妈妈生日快乐
+			</p>
+			<br>
+			<br>
+			<br>
+			<br>
+			<p id="en">
+			</p>
+			<br>
+			<br>
+			<br>
+			<br>
+			<p id="time">
+			</p>
+		</div>
+		<h1 id="h1" style="font-size: 10vw;"></h1>
+	</center>
+	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+	<script>
+		function caltime(x) {
+			if (x < 10)
+				return '0' + x;
+			return x;
+		}
+		alert("生日快乐🎂🥳🌹");
+		let h1 = document.getElementById('h1');
+		h1.innerText = '3';
+		setTimeout(() => {
+			h1.innerText = '2';
+		}, 1000);
+		setTimeout(() => {
+			h1.innerText = '1';
+		}, 2000);
+		setTimeout(() => {
+			h1.innerText = '';
+		}, 3000);
+		setTimeout(() => {
+			let str = 'H a pp y   B ir thd ay  !  ';
+			let s = ['🌹', '🥳', '🎂', '👩🏻', '🎁', '🎉', '🥰', '😄'];
+			let txt = document.getElementById('text'), en = document.getElementById('en');
+			let sz = 0;
+			setInterval(() => {
+				txt.innerText = '妈妈生日快乐' + s[Math.floor(Math.random() * 8)];
+			}, 600);
+			setInterval(() => {
+				if (sz < str.length)
+					en.innerText += str[sz], sz++;
+				else if (sz < str.length + 5)
+					sz++;
+				else
+					sz = 0, en.innerText = ' ';
+			}, 200);
+			setInterval(() => {
+				let time = new Date(Date.now());
+				document.getElementById('time').innerText = '现在是 : ' + time.getFullYear() + '年 ' + (time.getMonth() + 1) + '月 ' + time.getDate() + '日 ' + caltime(time.getHours()) + ' : ' + caltime(time.getMinutes()) + ' : ' + caltime(time.getSeconds());
+			}, 100);
+		}, 3000);
+	</script>
+</body>
+
+</html>
