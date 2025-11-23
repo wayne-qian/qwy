@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>聊天(qwy)</title>
+	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
+	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+</head>
+
+<style>
+	.text {
+		border: 0.2vh solid black;
+		margin-top: 1vh;
+		margin-bottom: 1vh;
+		font-size: 3vh;
+	}
+
+	.message {
+		border: 0.2vh solid black;
+		margin-top: 1vh;
+		margin-bottom: 1vh;
+		padding-top: 2vh;
+		padding-left: 2vw;
+		font-size: min(3vh, 3vw);
+		height: 70vh;
+		width: 98%;
+		border-radius: 0.8vw;
+		overflow-y: scroll;
+	}
+</style>
+
+<body>
+	<br>
+	<div>
+		<a id="main" href="../index.html" style="color: white; background-color: rgb(100, 100, 100); border-radius: 0.3vh;">首页</a>
+		<strong>|</strong>
+		<a id="login" href="./login/index.html" style="color: white; background-color: rgb(100, 100, 100); border-radius: 0.3vh;">登录</a>
+		<strong>|</strong>
+		<a id="sign" href="./register/index.html" style="color: white; background-color: rgb(100, 100, 100); border-radius: 0.3vh;">注册</a>
+		<strong>|</strong>
+		<select name="type" id="select" style="width: 8vw; font-size: 1.5vw">
+			<option value="1">发送至用户</option>
+			<option value="2">发送至频道</option>
+			<option value="3">加入频道</option>
+			<option value="4">退出频道</option>
+		</select>
+		<input id="user_channel" type="text" placeholder="请输入用户名或频道编号" style="font-size: 1vw;">
+		<button id="send" style="color: white; background-color: rgb(90, 90, 90); border-radius: 0.5vh;">发送</button>
+		<br>
+		<br>
+		<textarea name="text" id="text"
+			style="width: 99%; height:10vh; font-size: 2vh; resize: none; border-radius: 0.5vw;"
+			placeholder="请输入要发送的内容"></textarea>
+
+	</div>
+
+	<div id="message" class="message">
+
+	</div>
+
+	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+
+	<script>
+		function href(loc)
+		{
+			window.location = loc;
+		}
+		function hrefabs(loc)
+		{
+			window.location = loc;
+		}
+
+		// 发送消息
+
+	</script>
+
+</body>
+
+</html>

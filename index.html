@@ -10,7 +10,13 @@
 </head>
 
 <style>
-	
+	.page-container {
+		padding: 5vh 5vh;
+		border: 0.1vh;
+		border-radius: 2vh;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+
 	.nav {
 		border: 0.2vh solid gainsboro;
 		margin-top: 2vh;
@@ -24,6 +30,7 @@
 		position: -webkit-sticky;
 		top: 5vh;
 		float: top;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	}
 
 	.navtxt {
@@ -43,6 +50,8 @@
 
 	.text {
 		border: 0.2vh solid black;
+		border-radius: 1vh;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 		margin-top: 1vh;
 		margin-bottom: 1vh;
 		font-size: 3vh;
@@ -52,17 +61,43 @@
 <body>
 	<div class="nav">
 		<p class="navp">
-			<a href="https://www.qwy.ac" class="navtxt">首页</a>
-			<a href="https://www.qwy.ac/app" class="navtxt">应用</a>
-			<a href="https://www.qwy.ac/learn" class="navtxt">学习</a>
-			<a href="https://www.qwy.ac/sug" class="navtxt">推荐</a>
+			<button onclick="hrefabs('https://www.qwy.ac')" class="navtxt">首页</button>
+			<button onclick="hrefabs('https://www.qwy.ac/app')" class="navtxt">应用</button>
+			<button onclick="hrefabs('https://www.qwy.ac/sug')" class="navtxt">推荐</button>
 		</p>
 	</div>
 	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
 		Qianwenyu 的网站 </marquee>
 
-	<div id="txt" class="text"></div>
+	<!-- <a class="text" style="font-size: 5vh; color: black;" href="./chat/index.html"> -->
+	<!-- 聊天网页 -->
+	<!-- </a> -->
+	<div class="page-container">
+		<div class="text">
+			更新 :
+			<br>
+			<div class="text">
+				2025/11/23
+				<br>
+				1. 优化界面.
+				<br>
+				2. 删除作业答案, 防止被举报.
+				<br>
+				3. GHC使用二级域名 : gaoshi.qwy.ac.
+			</div>
+		</div>
+		<div class="text">
+			聊天网站即将完成制作
+		</div>
+		<div id="txt" class="text"></div>
+	</div>
 	<script>
+		function href(loc) {
+			window.location = loc;
+		}
+		function hrefabs(loc) {
+			window.location = loc;
+		}
 		let time = Date.now();
 		document.getElementById('txt').innerText = '注册本域名的第 ' + (Math.floor(time / 24 / 60 / 60 / 1000) - 20357) + ' 天';
 	</script>

@@ -4,19 +4,41 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>应用(qwy)</title>
+	<title>计算器(qwy)</title>
 	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
 	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
 </head>
 
 <style>
-	.page-container
-	{
+	.page-container {
 		padding: 5vh 5vh;
 		border: 0.1vh;
 		border-radius: 2vh;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)
 	}
+
+	.rt {
+		border: 0.2vh solid black;
+		width: 20vh;
+		height: 20vh;
+		font-size: 3vh;
+		place-items: center;
+		display: grid;
+	}
+
+	.btn {
+		width: 100vh;
+		height: 40vh;
+		font-size: 5vh;
+	}
+
+	.container {
+		display: grid;
+		place-items: center;
+	}
+
+
+
 	.nav {
 		border: 0.2vh solid gainsboro;
 		margin-top: 2vh;
@@ -54,46 +76,46 @@
 		margin-bottom: 1vh;
 		font-size: 3vh;
 	}
-
-	.app {
-		margin: 3vh 3vh;
-		font-size: 24px;
-		color: #333;
-		background-color: rgb(200, 200, 200);
-		border-radius: 1vh;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	}
 </style>
 
 <body>
 
 	<div class="nav">
 		<p class="navp">
-			<button onclick="hrefabs('https://www.qwy.ac')"  class="navtxt">首页</button>
-			<button onclick="hrefabs('https://www.qwy.ac/app')"  class="navtxt">应用</button>
+			<button onclick="hrefabs('https://www.qwy.ac')" class="navtxt">首页</button>
+			<button onclick="hrefabs('https://www.qwy.ac/app')" class="navtxt">应用</button>
 			<button onclick="hrefabs('https://www.qwy.ac/sug')" class="navtxt">推荐</button>
 		</p>
 	</div>
-	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;">
-		欢迎来到 Qianwenyu 的网站 </marquee>
-	<br>
+	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
+		Qianwenyu 的网站 </marquee>
 	<div class="page-container">
-		<button class="app" onclick="href('./cal')" >计算器</button>
-		<button class="app" onclick="href('./2048')" >2048</button>
-		<button class="app" onclick="href('./time')" >时间</button>
-		<button class="app" onclick="href('./click')" >测手速</button>
-		<button class="app" onclick="href('./paint')" >画图</button>
+		<center>
+			<br>
+			<input type="text" style="height: 3vh; width: 50vh; font-size: 3vh;" id="in" placeholder="请输入表达式(可以输入JS代码)">
+			<!-- <button onclick="cal()">计算</button> -->
+			<div id="res" style="font-size: 5vh;"></div>
+		</center>
 	</div>
-	<br>
-	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
 	<script>
-		function href(loc)
-		{
+		function href(loc) {
 			window.location = loc;
 		}
-		function hrefabs(loc)
-		{
+		function hrefabs(loc) {
 			window.location = loc;
+		}
+		// document.getElementById('in').onkeypress = (ev) => {
+		// 	if (ev.key == 'Enter')
+		// 		cal();
+		// }
+		setInterval(() => {
+			cal();
+		}, 10);
+		function cal() {
+			if (eval(document.getElementById('in').value) != undefined)
+				document.getElementById('res').innerText = eval(document.getElementById('in').value);
+			else
+				document.getElementById('res').innerText = 0;
 		}
 	</script>
 </body>
