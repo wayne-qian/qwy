@@ -7,9 +7,11 @@
 	<title>首页(qwy)</title>
 	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
 	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+	<link rel="stylesheet" href="./index.css">
 </head>
+<script src="./index.js"></script>
 
-<style>
+<!-- <style>
 	.page-container {
 		padding: 5vh 5vh;
 		border: 0.1vh;
@@ -34,9 +36,9 @@
 	}
 
 	.navtxt {
-		font-size: 4vh;
-		margin-left: 5vh;
-		margin-right: 5vh;
+		font-size: min(4vw, 4vh);
+		margin-left: 1vw;
+		margin-right: 1vw;
 		margin-top: 0px;
 		margin-bottom: 0px;
 		color: rgb(75, 75, 75);
@@ -56,16 +58,10 @@
 		margin-bottom: 1vh;
 		font-size: 3vh;
 	}
-</style>
+</style> -->
 
 <body>
-	<div class="nav">
-		<p class="navp">
-			<button onclick="hrefabs('https://www.qwy.ac')" class="navtxt">首页</button>
-			<button onclick="hrefabs('https://www.qwy.ac/app')" class="navtxt">应用</button>
-			<button onclick="hrefabs('https://www.qwy.ac/sug')" class="navtxt">推荐</button>
-		</p>
-	</div>
+	<div id="navi"></div>
 	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
 		Qianwenyu 的网站 </marquee>
 
@@ -73,35 +69,34 @@
 	<!-- 聊天网页 -->
 	<!-- </a> -->
 	<div class="page-container">
-		<div class="text">
-			更新 :
-			<br>
-			<div class="text">
-				2025/11/23
-				<br>
-				1. 优化界面.
-				<br>
-				2. 删除作业答案, 防止被举报.
-				<br>
-				3. GHC使用二级域名 : gaoshi.qwy.ac.
-			</div>
+		<div class="text" id="upd">
+			更新 : 点击查看详情
 		</div>
-		<div class="text">
+		<div class="text" id="chat">
 			聊天网站即将完成制作
 		</div>
 		<div id="txt" class="text"></div>
+		<div id="ct" class="text">
+			网站访问人数 : <strong id="ct">???</strong>
+			<h1 style="color: red;">目前无法使用</h1>
+		</div>
 	</div>
 	<script>
-		function href(loc) {
-			window.location = loc;
-		}
-		function hrefabs(loc) {
-			window.location = loc;
-		}
+		// function href(loc) {
+		// 	window.location = loc;
+		// }
+		// function hrefabs(loc) {
+		// 	window.location = loc;
+		// }
+		addclick(document.getElementById('upd'), '更新 : 2025/11/24<br>点击查看详情', '更新 : <br><div class="text">2025/11/24<br>1. 修复导航栏显示错误, 增加导航栏取消悬空功能, 宽度过低显示下拉菜单.<br>2. 增加效果,和图标.<br>3. 增加新功能, 但目前无法使用.<br></div><div class="text">2025/11/23<br>1. 优化界面.<br>2. 删除作业答案, 防止被举报.<br>3. GHC使用二级域名 : <a href="https://gaoshi.qwy.ac">gaoshi.qwy.ac</a>.<br>4. 添加计算器<br></div>');
+		addclick(document.getElementById('ct'), '网站访问人数 : <strong id="ct">???</strong>', '网站访问人数 : <strong id="ct">???</strong><h1 style="color: red;">目前无法使用</h1>');
+		addclick(document.getElementById('chat'), '聊天网站即将完成制作', '聊天网站即将完成制作<br><a style="color: black;" href="./chat/index.html">chat</a>');
+		// document.getElementById('ct').innerText = 
 		let time = Date.now();
 		document.getElementById('txt').innerText = '注册本域名的第 ' + (Math.floor(time / 24 / 60 / 60 / 1000) - 20357) + ' 天';
 	</script>
 	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
 </body>
+<script src="./nav.js"></script>
 
 </html>

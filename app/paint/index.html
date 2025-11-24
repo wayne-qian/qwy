@@ -7,10 +7,12 @@
 	<title>画图(qwy)</title>
 	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
 	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+	<link rel="stylesheet" href="../../index.css">
 </head>
+<script src="../../index.js"></script>
 
 <style>
-	.page-container {
+	/* .page-container {
 		padding: 5vh 5vh;
 		border: 0.1vh;
 		border-radius: 2vh;
@@ -34,9 +36,9 @@
 	}
 
 	.navtxt {
-		font-size: 4vh;
-		margin-left: 5vh;
-		margin-right: 5vh;
+		font-size: min(4vw, 4vh);
+		margin-left: 1vw;
+		margin-right: 1vw;
 		margin-top: 0px;
 		margin-bottom: 0px;
 		color: rgb(75, 75, 75);
@@ -53,7 +55,7 @@
 		margin-top: 1vh;
 		margin-bottom: 1vh;
 		font-size: 3vh;
-	}
+	} */
 
 	.canvas {
 		border: 1px solid black;
@@ -67,14 +69,7 @@
 
 <body>
 
-	<div class="nav">
-		<p class="navp">
-			<button onclick="hrefabs('https://www.qwy.ac')" class="navtxt">首页</button>
-			<button onclick="hrefabs('https://www.qwy.ac/app')" class="navtxt">应用</button>
-			<button onclick="hrefabs('https://www.qwy.ac/sug')" class="navtxt">推荐</button>
-
-		</p>
-	</div>
+	<div id="navi"></div>
 	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
 		Qianwenyu 的网站 </marquee>
 	<div class="page-container">
@@ -88,12 +83,15 @@
 	</div>
 	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
 	<script>
-		function href(loc) {
-			window.location = loc;
-		}
-		function hrefabs(loc) {
-			window.location = loc;
-		}
+		// function href(loc) {
+		// 	window.location = loc;
+		// }
+		// function hrefabs(loc) {
+		// 	window.location = loc;
+		// }
+		let e = document.getElementsByClassName('button');
+		for(let i = 0; i < e.length; i++)
+			addmouse(e[i]);
 		document.getElementById('c').height = document.documentElement.clientHeight - 150;
 		document.getElementById('c').width = document.documentElement.clientWidth - 80;
 	</script>
@@ -153,4 +151,5 @@
 
 </script>
 
+<script src="../../nav.js"></script>
 </html>

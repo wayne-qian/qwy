@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="334.745 283.256 166.098 69.1625" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<linearGradient gradientTransform="matrix(95.2915 1.019 -1.10614 85.2999 83.4428 32.9553)" gradientUnits="userSpaceOnUse" id="LinearGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0" stop-color="#ff0000"/>
+<stop offset="0.12528" stop-color="#00ff00"/>
+</linearGradient>
+</defs>
+<g id="Layer">
+<g opacity="1">
+<text fill="url(#LinearGradient)" font-family="Apple-Chancery" font-size="44.3017" opacity="1" stroke="none" text-anchor="start" transform="matrix(1 0 0 1 331.63 263.701)" x="0" y="0">
+<tspan textLength="166.239" x="0" y="49.5149"><![CDATA[QWY.AC]]></tspan>
+</text>
+</g>
+<path d="M355.345 348.521C355.345 348.521 355.345 348.521 355.345 348.521C355.345 348.521 355.346 348.521 355.346 348.521C355.346 348.521 355.347 348.521 355.347 348.521C355.348 348.521 355.348 348.521 355.349 348.522C355.349 348.522 355.349 348.523 355.348 348.524C355.346 348.524 355.344 348.525 355.338 348.526C355.333 348.526 355.325 348.526 355.316 348.524C355.306 348.522 355.295 348.518 355.29 348.511C355.284 348.504 355.284 348.493 355.307 348.479C355.33 348.466 355.377 348.45 355.465 348.443C355.553 348.435 355.687 348.435 355.846 348.467C356.005 348.499 356.195 348.565 356.289 348.689C356.382 348.813 356.379 349.001 355.993 349.225C355.606 349.448 354.815 349.716 353.323 349.847C351.831 349.978 349.575 349.974 346.885 349.431C344.195 348.888 340.981 347.775 339.401 345.678C337.821 343.581 337.878 340.41 344.407 336.629C350.936 332.848 364.315 328.33 389.532 326.11C414.748 323.889 452.877 323.97 498.343 333.146" fill="none" opacity="1" stroke="#09ff00" stroke-linecap="butt" stroke-linejoin="round" stroke-width="5"/>
+</g>
+</svg>

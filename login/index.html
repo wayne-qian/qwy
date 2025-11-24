@@ -7,10 +7,12 @@
 	<title>登录(qwy)</title>
 	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
 	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+	<link rel="stylesheet" href="../index.css">
 </head>
+<script src="../index.js"></script>
 
 <style>
-	.text {
+	/* .text {
 		border: 0.2vh solid black;
 		margin-top: 1vh;
 		margin-bottom: 1vh;
@@ -28,11 +30,12 @@
 		width: 98%;
 		border-radius: 0.8vw;
 		overflow-y: scroll;
-	}
+	} */
 </style>
 
 <body>
 	<br>
+	<h1 style="color: red;">目前无法使用</h1>
 	<center>
 		<input type="text" placeholder="用户名" id="username" style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
 		<br>
@@ -46,14 +49,14 @@
 	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
 
 	<script>
-		function href(loc)
-		{
-			window.location = loc;
-		}
-		function hrefabs(loc)
-		{
-			window.location = loc;
-		}
+		// function href(loc)
+		// {
+		// 	window.location = loc;
+		// }
+		// function hrefabs(loc)
+		// {
+		// 	window.location = loc;
+		// }
 
 		document.getElementById('submit').onclick = async () => {
 			let headersList = {
@@ -76,7 +79,7 @@
 				alert('用户名或密码错误');
 			else {
 				localStorage.setItem('token', r.token);
-				window.location = '../index.html';
+				window.location = 'https://www.qwy.ac';
 			}
 		}
 	</script>
