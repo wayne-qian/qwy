@@ -5,8 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>首页(qwy)</title>
-	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
-	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+	<link rel="shortcut icon" href="https://www.qwy.ac/icon.svg" type="image/svg">
+	<link rel="icon" href="https://www.qwy.ac/icon.svg">
 	<link rel="stylesheet" href="./index.css">
 </head>
 <script src="./index.js"></script>
@@ -70,16 +70,13 @@
 	<!-- </a> -->
 	<div class="page-container">
 		<div class="text" id="upd">
-			更新 : 点击查看详情
+			更新 : 2025/11/29
+			<br>
+			点击查看详情
 		</div>
-		<div class="text" id="chat">
-			聊天网站即将完成制作
-		</div>
+		<textarea class="text" id="con" cols="30" rows="3" placeholder="反馈错误"></textarea>
+		<button id="submit" class="text">提交</button>
 		<div id="txt" class="text"></div>
-		<div id="ct" class="text">
-			网站访问人数 : <strong id="ct">???</strong>
-			<h1 style="color: red;">目前无法使用</h1>
-		</div>
 	</div>
 	<script>
 		// function href(loc) {
@@ -88,14 +85,36 @@
 		// function hrefabs(loc) {
 		// 	window.location = loc;
 		// }
-		addclick(document.getElementById('upd'), '更新 : 2025/11/24<br>点击查看详情', '更新 : <br><div class="text">2025/11/24<br>1. 修复导航栏显示错误, 增加导航栏取消悬空功能, 宽度过低显示下拉菜单.<br>2. 增加效果,和图标.<br>3. 增加新功能, 但目前无法使用.<br></div><div class="text">2025/11/23<br>1. 优化界面.<br>2. 删除作业答案, 防止被举报.<br>3. GHC使用二级域名 : <a href="https://gaoshi.qwy.ac">gaoshi.qwy.ac</a>.<br>4. 添加计算器<br></div>');
-		addclick(document.getElementById('ct'), '网站访问人数 : <strong id="ct">???</strong>', '网站访问人数 : <strong id="ct">???</strong><h1 style="color: red;">目前无法使用</h1>');
-		addclick(document.getElementById('chat'), '聊天网站即将完成制作', '聊天网站即将完成制作<br><a style="color: black;" href="./chat/index.html">chat</a>');
+		addmouse(document.getElementById('submit'));
+		addclick(document.getElementById('upd'), '更新 : 2025/11/29<br>点击查看详情', '更新 : <br><div class="text">2025/11/29<br>1. 增加登录、注册功能<br>2. 增加聊天功能<br>3. 增加网站访问人数功能<br></div><div class="text">2025/11/24<br>1. 修复导航栏显示错误, 增加导航栏取消悬空功能, 宽度过低显示下拉菜单.<br>2. 增加效果,和图标.<br>3. 增加新功能, 但目前无法使用.<br></div><div class="text">2025/11/23<br>1. 优化界面.<br>2. 删除作业答案, 防止被举报.<br>3. GHC使用二级域名 : <a href="https://gaoshi.qwy.ac">gaoshi.qwy.ac</a>.<br>4. 添加计算器<br></div>');
 		// document.getElementById('ct').innerText = 
 		let time = Date.now();
+		document.getElementById('submit').onclick = async () => {
+			if (!document.getElementById('con').value)
+				return;
+			let resp = await fetch("https://ichat-api.qwy.ac/messages", {
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"xToken": localStorage.getItem('token')
+				},
+				"body": JSON.stringify({
+					"to": "@qianwenyu",
+					"content": '反馈 : \n' + document.getElementById('con').value,
+					"nonce": Date.now()
+				})
+			});
+			let data = await resp.json();
+			if (data.error)
+				alert('反馈失败');
+			else {
+				alert('反馈成功');
+				document.getElementById('con').value = '';
+			}
+		}
 		document.getElementById('txt').innerText = '注册本域名的第 ' + (Math.floor(time / 24 / 60 / 60 / 1000) - 20357) + ' 天';
 	</script>
-	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 </body>
 <script src="./nav.js"></script>
 

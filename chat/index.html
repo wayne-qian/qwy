@@ -5,8 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>聊天(qwy)</title>
-	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
-	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+	<link rel="shortcut icon" href="https://www.qwy.ac/icon.svg" type="image/svg">
+	<link rel="icon" href="https://www.qwy.ac/icon.svg">
 	<link rel="stylesheet" href="../index.css">
 </head>
 <script src="../index.js"></script>
@@ -46,62 +46,475 @@
 		margin-bottom: 1vh;
 		font-size: 3vh;
 	}
+ */
+	.lr {
+		box-sizing: border-box;
+	}
+
+	.container {
+		display: grid;
+		grid-template-columns: 3fr 7fr;
+		gap: 10px;
+	}
+
+	.container2 {
+		display: grid;
+		grid-template-columns: 8fr 2fr;
+		gap: 10px;
+	}
+
+	.sp {
+		color: rgb(80, 80, 80);
+	}
 
 	.message {
-		border: 0.2vh solid black;
 		margin-top: 1vh;
 		margin-bottom: 1vh;
 		padding-top: 2vh;
 		padding-left: 2vw;
 		font-size: min(3vh, 3vw);
-		height: 50vh;
-		width: 98%;
-		border-radius: 0.8vw;
+		height: 55vh;
 		overflow-y: scroll;
-	} */
+	}
 </style>
 
 <body>
 	<div id="navi"></div>
-	<div>
-		<h1 style="color: red;">目前无法使用</h1>
-		<select name="type" id="select" style="width: 12vw; font-size: 1.5vw">
-			<option value="1">发送至用户</option>
-			<option value="2">发送至频道</option>
-			<option value="3">加入频道</option>
-			<option value="4">退出频道</option>
-		</select>
-		<input id="user_channel" type="text" placeholder="请输入用户名或频道编号" style="font-size: 1vw;">
-		<button id="send" style="color: white; background-color: rgb(90, 90, 90); border-radius: 0.5vh;">发送</button>
-		<br>
-		<br>
-		<textarea name="text" id="text"
-			style="width: 99%; height:10vh; font-size: 2vh; resize: none; border-radius: 0.5vw;"
-			placeholder="请输入要发送的内容"></textarea>
-
+	<div class="page-container container">
+		<span class="lr text" style="padding: 3%;">
+			<select id="ch" style="font-size: 3.5vmin">
+				<option value="0" style="font-size: 3.5vmin">添加好友</option>
+				<option value="1" style="font-size: 3.5vmin">创建频道</option>
+				<option value="2" style="font-size: 3.5vmin">加入频道</option>
+				<option value="3" style="font-size: 3.5vmin">退出频道</option>
+			</select>
+			<span id="confirm" style="font-size: 3vmin; border-radius: 0.5vh; border: 0.3vh inset black;">确认</span>
+			<br><br>
+			<input id="channel" type="text" placeholder="请输入频道编号或用户名" style="font-size: max(1.5vw, 1vh);">
+			<br><br>
+			<center>
+				<div id="channelList" class="page-container" style="padding: 3%; height: 45vh; overflow-y: scroll;">
+				</div>
+			</center>
+		</span>
+		<span class="lr">
+			<textarea name="text" id="text" class="page-container"
+				style="width: 80%; height: 8vmin; font-size: 3.5vmin; resize: none; border-radius: 0.5vw; padding: 0px;"
+				placeholder="请输入要发送的内容"></textarea>
+			<span id="send" style="font-size: 3vmin; border-radius: 0.5vh; border: 0.3vh inset black;">发送</span>
+			<br>
+			<span id="to" class="text">to : </span>
+			<div id="message" class="page-container message">
+		</span>
 	</div>
-
-	<div id="message" class="message">
-
 	</div>
-
-	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 
 	<script>
-		// function href(loc)
-		// {
-		// 	window.location = loc;
+		let url = 'https://ichat-api.qwy.ac/';
+		let time = Date.now();
+		let start;
+		let ltch = new Array(10000);
+		let rdch = new Array(10000);
+		let id_cid = new Array(10000);
+		let ltus = new Array(10000);
+		let rdus = new Array(10000);
+		let id_uid = new Array(10000);
+		let message = document.getElementById('message');
+		let list = document.getElementById('channelList');
+		// 添加
+		let add_btn = document.getElementById('confirm');
+		let cidr, peersr;
+		// function updreadch(id) {
+		// 	ltch[id] = parseInt(localStorage.getItem(to));
+		// 	document.getElementById(`rd${id_cid[id]}`).innerText = ltch[id] - rdch[id];
 		// }
-		// function hrefabs(loc)
-		// {
-		// 	window.location = loc;
+		// function updreadus(id) {
+		// 	ltus[id] = parseInt(localStorage.getItem(to));
+		// 	document.getElementById(`rd@${id_uid[id]}`).innerText = ltus[id] - rdus[id];
 		// }
-
+		function addch(id) {
+			// console.log(document.getElementById(`ch${id}`));
+			document.getElementById(cidr[id].cid).onclick = async () => {
+				message.innerHTML = '';
+				rdch[id] = ltch[id];
+				// localStorage.setItem(cidr[id].cid, rdch[id]);
+				// updreadch(id);
+				start = 0;
+				to = cidr[id].cid;
+				document.getElementById('to').innerText = 'to : ' + to;
+				// let resp = await fetch(`https://ichat-api.qwy.ac/messages/${to}?start=-1&limit=100`, {
+				// 	method: "GET",
+				// 	headers: {
+				// 		"xToken": localStorage.getItem('token')
+				// 	}
+				// })
+				// if (!resp.ok)
+				// 	throw new Error(resp.statusText);
+				// let r = await resp.json();
+				// // console.log(r);
+				// let msgs = r;
+				// message.innerHTML = '';
+				// for (let msg of msgs) {
+				// 	message.innerHTML = `<span class="text">from : <span class="sp">${msg.from}</span></span> <span class="text">to : <span class="sp">${(to == '@' + msg.from ? username : to)}</span></span><br><div class="page-container">${msg.content}</div><br>` + message.innerHTML;
+				// 	// msg.from
+				// 	// msg.to
+				// 	// msg.content
+				// 	// msg.ts // 时间戳
+				// }
+				// // start = msgs[msgs.length - 1].i + 1;
+			}
+		}
+		function addus(id) {
+			document.getElementById('@' + peersr[id].uid).onclick = async () => {
+				message.innerHTML = '';
+				rdus[id] = ltus[id];
+				// localStorage.setItem('@' + peersr[id].uid, rdus[id]);
+				// updreadus(id);
+				start = 0;
+				to = '@' + peersr[id].uid;
+				document.getElementById('to').innerText = 'to : ' + to;
+				// let resp = await fetch(`https://ichat-api.qwy.ac/messages/${to}?start=-1&limit=100`, {
+				// 	method: "GET",
+				// 	headers: {
+				// 		"xToken": localStorage.getItem('token')
+				// 	}
+				// })
+				// if (!resp.ok)
+				// 	throw new Error(resp.statusText);
+				// let r = await resp.json();
+				// // console.log(r);
+				// message.innerHTML = '';
+				// let msgs = r;
+				// for (let msg of msgs) {
+				// 	message.innerHTML = `<span class="text">from : <span class="sp">${msg.from}</span></span> <span class="text">to : <span class="sp">${(to == '@' + msg.from ? username : to)}</span></span><br><div class="page-container">${msg.content}</div><br>` + message.innerHTML;
+				// 	// msg.from
+				// 	// msg.to
+				// 	// msg.content
+				// 	// msg.ts // 时间戳
+				// }
+				// // start = msgs[msgs.length - 1].i + 1;
+			}
+		}
+		function addmb(cid) {
+			setTimeout(() => {
+				document.getElementById('mb' + cid).onclick = async () => {
+					let s = '频道成员 : \n';
+					let respmem = await fetch(`https://ichat-api.qwy.ac/channels/${cid}/members`, {
+						method: "GET",
+						headers: {
+							"xToken": localStorage.getItem('token')
+						},
+					});
+					let memdata = await respmem.json();
+					let members = memdata;
+					for (let member of members) {
+						s += member.uid + '\n';
+					}
+					alert(s);
+				}
+			}, 1000);
+		}
+		function getPeersChannels() {
+			(async () => {
+				let cid = await fetch("https://ichat-api.qwy.ac/channels", {
+					method: "GET",
+					headers: {
+						"xToken": localStorage.getItem('token')
+					},
+				});
+				let ct = 0;
+				let ciddata = await cid.text();
+				cidr = JSON.parse(ciddata);
+				list.innerHTML = '';
+				for (; ct < cidr.length; ct++) {
+					let name = await fetch(`https://ichat-api.qwy.ac/channels/${cidr[ct].cid}/desc`, {
+						method: "GET",
+						headers: {
+							"xToken": localStorage.getItem('token')
+						},
+					});
+					let namedata = await name.text();
+					let namer = JSON.parse(namedata);
+					// <span class="page-container" id="rd${cidr[ct].cid}" style="color: white; background-color: red; padding: 0px 3%;">0</span>
+					list.innerHTML += `<div class="container2"><span id="${cidr[ct].cid}" class="text lr">cid : ${cidr[ct].cid}<br>name : ${namer.name}</span><span class="page-container lr" style="padding: 3% 0px; font-size: 3vh;" id="mb${cidr[ct].cid}">···</span>`;
+					addmb(cidr[ct].cid);
+					// if (!localStorage.getItem(cidr[ct].cid))
+					// 	localStorage.setItem(cidr[ct].cid, -1);
+					// let read = await fetch(`https://ichat-api.qwy.ac/messages/${cidr[ct].cid}?start=-1&limit=1`, {
+					// 	method: "GET",
+					// 	headers: {
+					// 		"xToken": localStorage.getItem('token')
+					// 	},
+					// });
+					// let rdata = (await read.json())[0].i;
+					// ltch[ct] = rdata;
+					// rdch[ct] = parseInt(localStorage.getItem(cidr[ct].cid));
+					// id_cid[ct] = cidr[ct].cid;
+					// updreadch(ct);
+				}
+				let peers = await fetch("https://ichat-api.qwy.ac/peers", {
+					method: "GET",
+					headers: {
+						"xToken": localStorage.getItem('token')
+					},
+				});
+				let peersdata = await peers.text();
+				peersr = JSON.parse(peersdata);
+				// <span class="page-container" id="rd@${peersr[ct].uid}" style="color: white; background-color: red; padding: 0px 3%;">0</span>
+				for (ct = 0; ct < peersr.length; ct++) {
+					list.innerHTML += `<div id="@${peersr[ct].uid}" class="text">uid : ${peersr[ct].uid}</div>`;
+					// if (!localStorage.getItem('@' + peersr[ct].uid))
+					// 	localStorage.setItem('@' + peersr[ct].uid, -1);
+					// let read = await fetch(`https://ichat-api.qwy.ac/messages/@${peersr[ct].uid}?start=-1&limit=1`, {
+					// 	method: "GET",
+					// 	headers: {
+					// 		"xToken": localStorage.getItem('token')
+					// 	},
+					// });
+					// let rdata = (await read.json())[0].i;
+					// ltus[ct] = rdata;
+					// rdus[ct] = parseInt(localStorage.getItem('@' + peersr[ct].uid));
+					// id_uid[ct] = peersr[ct].uid;
+					// updreadus(ct);
+				}
+			})()
+				.then(() => {
+					for (let i = 0; i < cidr.length; i++) {
+						// console.log(document.getElementById(`ch${id}`));
+						addch(i);
+						addmouse(document.getElementById(cidr[i].cid));
+					}
+					for (let i = 0; i < peersr.length; i++) {
+						// console.log(document.getElementById(`ch${id}`));
+						addus(i);
+						addmouse(document.getElementById('@' + peersr[i].uid));
+					}
+				})
+		}
+		add_btn.onclick = async () => {
+			let add_sel = document.getElementById('ch');
+			let add_to = document.getElementById('channel');
+			if (add_sel.value == 0) {
+				let desc_resp = await fetch("https://ichat-api.qwy.ac/desc", {
+					"method": "GET",
+					"headers": {
+						"xToken": localStorage.getItem('token')
+					}
+				});
+				let { name } = await desc_resp.json();
+				let resp = await fetch("https://ichat-api.qwy.ac/messages", {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json",
+						"xToken": localStorage.getItem('token')
+					},
+					"body": JSON.stringify({
+						"to": '@' + add_to.value,
+						"content": `你好, 我是${name}(系统)`,
+						"nonce": Date.now()
+					})
+				});
+				let data = await resp.text();
+				let r = JSON.parse(data);
+				if (r.error) {
+					alert('添加失败' + r.error);
+				}
+				else
+					alert('添加成功');
+				getPeersChannels();
+			}
+			else if (add_sel.value == 1) {
+				let resp = await fetch("https://ichat-api.qwy.ac/channels", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"xToken": localStorage.getItem('token')
+					},
+					body: JSON.stringify({
+						name: add_to.value
+					})
+				})
+				let data = await resp.text();
+				let r = JSON.parse(data);
+				if (r.error) {
+					alert('创建失败' + r.error);
+				}
+				else
+					alert('创建成功');
+				getPeersChannels();
+			}
+			else if (add_sel.value == 2) {
+				let resp = await fetch(`https://ichat-api.qwy.ac/channels/${add_to.value}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"xToken": localStorage.getItem('token')
+					},
+				})
+				let data = await resp.text();
+				let r = JSON.parse(data);
+				if (r.error) {
+					alert('加入失败' + r.error);
+				}
+				else
+					alert('加入成功');
+				getPeersChannels();
+			}
+			else if (add_sel.value == 3) {
+				let resp = await fetch(`https://ichat-api.qwy.ac/channels/${add_to.value}`, {
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+						"xToken": localStorage.getItem('token')
+					},
+				})
+				let data = await resp.text();
+				let r = JSON.parse(data);
+				if (r.error) {
+					alert('退出失败' + r.error);
+				}
+				else
+					alert('退出成功');
+				getPeersChannels();
+			}
+		}
 		// 发送消息
-
+		let send_btn = document.getElementById('send');
+		let send_to = document.getElementById('user_channel');
+		let send_con = document.getElementById('text');
+		send_btn.onclick = async () => {
+			let resp = await fetch("https://ichat-api.qwy.ac/messages", {
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"xToken": localStorage.getItem('token')
+				},
+				"body": JSON.stringify({
+					"to": to,
+					"content": send_con.value,
+					"nonce": Date.now()
+				})
+			});
+			let data = await resp.text();
+			let r = JSON.parse(data);
+			if (r.error) {
+				alert('发送失败' + r.error);
+			}
+			else {
+				send_con.value = '';
+				localStorage.setItem(to, parseInt(localStorage.getItem(to)));
+			}
+		}
+		// 获取消息
+		function sleep(ms) {
+			return new Promise(resolve => {
+				setTimeout(() => resolve(), ms)
+			})
+		}
+		let username;
+		let to;
+		// start = 0;
+		(async () => {
+			let resp = await fetch("https://ichat-api.qwy.ac/desc", {
+				method: "GET",
+				headers: {
+					"xToken": localStorage.getItem('token')
+				}
+			});
+			username = (await resp.json()).name;
+		})()
+			.then(() => {
+				to = '@' + username;
+				document.getElementById('to').innerText = 'to : ' + to;
+				(async () => {
+					for (; ;) {
+						try {
+							let resp = await fetch(`https://ichat-api.qwy.ac/messages/${to}?start=-1&limit=100`, {
+								method: "GET",
+								headers: {
+									"xToken": localStorage.getItem('token')
+								}
+							})
+							if (!resp.ok)
+								throw new Error(resp.statusText);
+							let r = await resp.json();
+							// console.log(r);
+							let msgs = r;
+							message.innerHTML = '';
+							for (let msg of msgs) {
+								message.innerHTML = `<span class="text">from : <span class="sp">${msg.from}</span></span> <span class="text">to : <span class="sp">${(to == '@' + msg.from ? username : to)}</span></span><br><div class="page-container">${msg.content}</div><br>` + message.innerHTML;
+								// msg.from
+								// msg.to
+								// msg.content
+								// msg.ts // 时间戳
+							}
+						} catch {
+							await sleep(1000);
+						}
+						await sleep(1000);
+					}
+				})();
+			});
+		// (async () => {
+		// 	let since = 0;
+		// 	for (; ;) {
+		// 		try {
+		// 			let resp = await fetch(`https://ichat-api.qwy.ac/messages?since=${since}&limit=10`, {
+		// 				method: "GET",
+		// 				headers: {
+		// 					"xToken": localStorage.getItem('token')
+		// 				}
+		// 			})
+		// 			if (!resp.ok)
+		// 				throw new Error(resp.statusText);
+		// 			let r = await resp.json();
+		// 			// console.log(r);
+		// 			let msgs = r.msgs;
+		// 			console.log(msgs);
+		// 			since = r.next;
+		// 			for (let msg of msgs) {
+		// 				console.log(time);
+		// 				console.log(msg.ts);
+		// 				if (msg.ts > time) {
+		// 					console.log('0');
+		// 					if (msg.to == '@') {
+		// 						for (let i = 0; i < ltus.length; i++)
+		// 							if ('@' + id_uid[i] == msg.from) {
+		// 								console.log('1');
+		// 								ltus[i]++;
+		// 								updreadus(i);
+		// 								break;
+		// 							}
+		// 					}
+		// 					else {
+		// 						for (let i = 0; i < ltch.length; i++)
+		// 							if (id_cid[i] == msg.to) {
+		// 								console.log('2');
+		// 								ltch[i]++;
+		// 								updreadch(i);
+		// 								break;
+		// 							}
+		// 					}
+		// 				}
+		// 				// msg.from
+		// 				// msg.to
+		// 				// msg.content
+		// 				// msg.ts // 时间戳
+		// 			}
+		// 		} catch {
+		// 			await sleep(3000);
+		// 		}
+		// 	}
+		// })();
+		getPeersChannels();
 	</script>
-
+	<script>
+		addmouse(document.getElementById('send'));
+		addmouse(document.getElementById('confirm'));
+	</script>
 </body>
 
 <script src="../nav.js"></script>
+
 </html>

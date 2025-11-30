@@ -5,8 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>注册(qwy)</title>
-	<link rel="shortcut icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png" type="image/png">
-	<link rel="icon" href="https://cdn.luogu.com.cn/upload/image_hosting/agn5wide.png">
+	<link rel="shortcut icon" href="https://www.qwy.ac/icon.svg" type="image/svg">
+	<link rel="icon" href="https://www.qwy.ac/icon.svg">
 	<link rel="stylesheet" href="../index.css">
 </head>
 <script src="../index.js"></script>
@@ -34,30 +34,33 @@
 </style>
 
 <body>
+	<div id="navi"></div>
 	<br>
-	<h1 style="color: red;">目前无法使用</h1>
-	<center>
-		<input type="text" placeholder="用户名" id="username" style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
-		<br>
-		<br>
-		<input type="password" placeholder="密码" id="password" style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
-		<br>
-		<br>
-		<input type="password" placeholder="确认密码" id="confirm" style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
-		<br>
-		<br>
-		<input type="submit" value="确认" id="submit" style="height: 2vw; width: 5vw;">
-	</center>
-
-	<button onclick="alert('本网站作者 : 钱文羽')">?</button>
+	<div class="page-container">
+		<center>
+			<input type="email" placeholder="用户名" id="username" style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
+			<button onclick="alert('3~15个字符, 不能数字开头, 只能包含数字和字母')"
+				style="border-radius: 100px; border: 0px solid black; background-color: gainsboro;">?</button>
+			<br>
+			<br>
+			<input type="password" placeholder="密码" id="password"
+				style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
+			<button onclick="alert('6~20个字符')"
+				style="border-radius: 100px; border: 0px solid black; background-color: gainsboro;">?</button>
+			<br>
+			<br>
+			<input type="password" placeholder="确认密码" id="confirm"
+				style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
+			<button onclick="alert('再输入一次密码')"
+				style="border-radius: 100px; border: 0px solid black; background-color: gainsboro;">?</button>
+			<br>
+			<br>
+			<input type="submit" value="确认" id="submit" style="height: 2vw; width: 5vw;">
+		</center>
+	</div>
+	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 
 	<script>
-		// function href(loc) {
-		// 	window.location = loc;
-		// }
-		// function hrefabs(loc) {
-		// 	window.location = loc;
-		// }
 
 		document.getElementById('submit').onclick = async () => {
 
@@ -66,32 +69,33 @@
 				return;
 			}
 
-			let headersList = {
-				"Accept": "*/*",
-				"Content-Type": "application/json"
-			}
-
-			let bodyContent = JSON.stringify({ "uid": document.getElementById('username').value, "password": document.getElementById('password').value });
-
-			let response = await fetch("http://192.168.218.38:3000/users", {
-				method: "POST",
-				body: bodyContent,
-				headers: headersList
+			let response = await fetch("https://ichat-api.qwy.ac/users", {
+				"method": "POST",
+				"headers": {
+					"content-type": "application/json"
+				},
+				"body": JSON.stringify({
+					"uid": document.getElementById('username').value,
+					"password": document.getElementById('password').value
+				})
 			});
-
-			let data = await response.text();
-
-			let r = JSON.parse(data);
-
-			if (r.error)
-				alert('用户名存在或不合法');
-			else {
+			if (response.status >= 200 && response.status < 300) {
+				let data = await response.text();
+				let r = JSON.parse(data);
 				localStorage.setItem('token', r.token);
-				window.location = 'https://www.qwy.ac';
+				window.location = '../index.html';
+			} else {
+				document.getElementById('username').value = document.getElementById('password').value = document.getElementById('confirm').value = '';
+				if (response.statusText == 'Conflict')
+					alert('用户名存在');
+				else
+					alert('用户名或密码不合法');
 			}
+
 		}
 	</script>
 
 </body>
+<script src="../nav.js"></script>
 
 </html>
