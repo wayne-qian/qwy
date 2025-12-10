@@ -31,7 +31,7 @@ setInterval(async () => {
 		if (data.name != undefined)
 			document.getElementById('uid').innerText = data.name;
 	}
-}, 1000);
+}, 100);
 function tog() {
 	if (Tg == 0)
 		Nv.classList.remove('nav'), Tg = 1;

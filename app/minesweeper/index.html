@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Minesweeper-扫雷(qwy)</title>
+	<link rel="shortcut icon" href="https://www.qwy.ac/icon.svg" type="image/svg">
+	<link rel="icon" href="https://www.qwy.ac/icon.svg">
+	<link rel="stylesheet" href="../../index.css">
+</head>
+<script src="../../index.js"></script>
+<style>
+	td {
+		background-color: rgb(191, 191, 191);
+		padding: 0;
+		text-align: center;
+		vertical-align: center;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+
+	span {
+		display: inline-block;
+	}
+
+	.click {
+		border: 0.8vmin inset white;
+		background-color: whitesmoke;
+	}
+
+	.unclick {
+		border: 0.8vmin outset white;
+		background-color: gainsboro;
+	}
+</style>
+
+<div id="navi"></div>
+<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;">
+	欢迎来到 Qianwenyu 的网站 </marquee>
+<center>
+	<span class="page-container" style="padding: 0.3vh; margin: 0; border-radius: 0.3vh;">
+		<span
+			style="padding: 3vmin; background-color: gainsboro; border: 0.3vh outset rgb(256, 256, 256); border-radius: 0.3vh;">
+			<div style="border: 1vmin inset rgb(210, 210, 210); border-radius: 0.3vh; padding: 1vh;">
+				<span style="border: 0.2vh solid black; border-radius: 0.5vmin;">
+					<button onclick="easy()">简单</button>
+				</span>
+				<span style="border: 0.2vh solid black; border-radius: 0.5vmin;">
+					<button onclick="med()">中级</button>
+				</span>
+				<span style="border: 0.2vh solid black; border-radius: 0.5vmin;">
+					<button onclick="exp()">专家</button>
+				</span>
+				<span style="border: 0.2vh solid black; border-radius: 0.5vmin;">
+					<button>自定义</button>
+					<input type="number" style="width: 6vmin;" id="r" placeholder="行">
+					<input type="number" style="width: 6vmin;" id="c" placeholder="列">
+					<input type="number" style="width: 6vmin;" id="mn" placeholder="雷">
+					<button onclick="confirm()">确认</button>
+				</span>
+			</div>
+			<div style="border: 1vmin inset rgb(210, 210, 210); border-radius: 0.3vh; padding: 1vh;">
+				<span style="float: left; height: 8vh;" id="mine">
+					<img src="./img/t0.png" alt="mine" style="height: 100%;"><img src="./img/t0.png" alt="mine"
+						style="height: 100%;"><img src="./img/t0.png" alt="mine" style="height: 100%;">
+				</span>
+				<span style="height: 6vh; width: 6vh;" class="unclick" id="restart"><img src="./img/face.png" alt="face"
+						height="100%"></span>
+				<span style="float: right; height: 8vh; " id="time">
+					<img src="./img/t0.png" alt="time" style="height: 100%;"><img src="./img/t0.png" alt="time"
+						style="height: 100%;"><img src="./img/t0.png" alt="time" style="height: 100%;">
+				</span>
+			</div>
+			<br>
+			<span style="border: 1vmin inset rgb(210, 210, 210); border-radius: 0.3vh;">
+				<table id="table"></table>
+			</span>
+		</span>
+	</span>
+</center>
+
+<body>
+</body>
+<script>
+	// document.oncontextmenu = event => event.preventDefault();
+	function easy() {
+		n = 9, m = 9, mine = 10, mode = 1;
+		document.getElementById('r').value = n;
+		document.getElementById('c').value = m;
+		document.getElementById('mn').value = mine;
+		start();
+	}
+	function med() {
+		n = 16, m = 16, mine = 40, mode = 2;
+		document.getElementById('r').value = n;
+		document.getElementById('c').value = m;
+		document.getElementById('mn').value = mine;
+		start();
+	}
+	function exp() {
+		n = 16, m = 30, mine = 99, mode = 3;
+		document.getElementById('r').value = n;
+		document.getElementById('c').value = m;
+		document.getElementById('mn').value = mine;
+		start();
+	}
+	function confirm() {
+		mode = 0;
+		n = document.getElementById('r').value;
+		m = document.getElementById('c').value;
+		mine = document.getElementById('mn').value;
+		start();
+	}
+	document.getElementById('restart').onmousedown = () => {
+		document.getElementById('restart').classList.add('click');
+		document.getElementById('restart').classList.remove('unclick');
+	}
+	document.getElementById('restart').onmouseup = () => {
+		document.getElementById('restart').classList.remove('click');
+		document.getElementById('restart').classList.add('unclick');
+	}
+	document.getElementById('restart').onclick = () => {
+		start();
+	}
+	// 9 9 10
+	// 16 16 40
+	// 16 30 99
+	let mode = 1;
+	let n = 9;
+	let m = 9;
+	let ct = 0;
+	let mine = 10;
+	let ctmn = 0;
+	let grid = new Array(57);
+	let mp = new Array(57);
+	let inter;
+	let time = 0;
+	let table = document.getElementById('table');
+	let s = '';
+	document.getElementById('r').value = n;
+	document.getElementById('c').value = m;
+	document.getElementById('mn').value = mine;
+	start();
+	function start() {
+		clearInterval(inter);
+		document.getElementById('time').innerHTML = '<img src="./img/t0.png" alt="time" style="height: 100%;"><img src="./img/t0.png" alt="time" style="height: 100%;"><img src="./img/t0.png" alt="time" style="height: 100%;">';
+		time = 0;
+		ct = 0, ctmn = 0;
+		grid = new Array(57);
+		mp = new Array(57);
+		table = document.getElementById('table');
+		s = '';
+		for (let i = 0; i < grid.length; i++) {
+			grid[i] = new Array(57);
+			mp[i] = new Array(57);
+			for (let j = 0; j < grid[i].length; j++)
+				grid[i][j] = 0;
+			for (let j = 0; j < mp[i].length; j++)
+				mp[i][j] = 0;
+		}
+		updmn();
+		for (let i = 1; i <= n; i++) {
+			s += `<tr id="tr${i}">`;
+			for (let j = 1; j <= m; j++) {
+				s += `<td id="td${i}_${j}" style="height: ${64 / n}vmin; width: ${64 / n}vmin; border: ${3.6 / n}vmin solid grey;"><span style="border: ${7.2 / n}vmin outset whitesmoke; height: 99%; display: block;"></span></td>`;
+			}
+			s += `</tr>`;
+		}
+		table.innerHTML = s;
+		for (let i = 1; i <= n; i++) {
+			for (let j = 1; j <= m; j++) {
+				let e = document.getElementById(`td${i}_${j}`);
+				e.onmousedown = function (event) {
+					if (check())
+						return;
+					if (event.button == 0) {
+						if (ct == 0) {
+							inter = setInterval(() => {
+								time++;
+								document.getElementById('time').innerHTML = `<img src="./img/t${Math.floor(time / 100) % 10}.png" alt="time" style="height: 100%;"><img src="./img/t${Math.floor(time / 10) % 10}.png" alt="time" style="height: 100%;"><img src="./img/t${time % 10}.png" alt="time" style="height: 100%;">`;
+							}, 1000);
+							createmp(i, j);
+						}
+						if (!mp[i][j])
+							open(i, j);
+						else if (mp[i][j] == 1) {
+							let mn = 0, smn = 0;
+							for (let x = i - 1; x <= i + 1; x++)
+								for (let y = j - 1; y <= j + 1; y++)
+									mn += grid[x][y], smn += (mp[x][y] == 2 || mp[x][y] == 3 ? 1 : 0);
+							if (mn != smn)
+								return;
+							for (let x = Math.max(1, i - 1); x <= Math.min(n, i + 1); x++)
+								for (let y = Math.max(1, j - 1); y <= Math.min(m, j + 1); y++)
+									if (!mp[x][y])
+										open(x, y);
+						}
+					}
+					else if (event.button == 2) {
+						if (mp[i][j] == 0) {
+							if (countmn() == mine)
+								return;
+							ctmn++;
+							mp[i][j] = 2;
+							upd(i, j);
+							updmn();
+						}
+						else if (mp[i][j] == 2) {
+							ctmn--;
+							mp[i][j] = 0;
+							upd(i, j);
+							updmn();
+						}
+					}
+					if (check()) {
+						clearInterval(inter);
+						for (let i = 1; i <= n; i++)
+							for (let j = 1; j <= m; j++)
+								if (!mp[i][j] && grid[i][j]) {
+									mp[i][j] = 2;
+									upd(i, j);
+								}
+						document.getElementById('mine').innerHTML = `<img src="./img/t${Math.floor(mine / 100) % 10}.png" alt="mine" style="height: 100%;"><img src="./img/t${Math.floor(mine / 10) % 10}.png" alt="mine" style="height: 100%;"><img src="./img/t${mine % 10}.png" alt="mine" style="height: 100%;">`;
+						alert('你赢了');
+					}
+				}
+			}
+		}
+	}
+	function countmn() {
+		ctmn = 0;
+		for (let i = 1; i <= n; i++)
+			for (let j = 1; j <= n; j++)
+				if (mp[i][j] == 2 || mp[i][j] == 3)
+					ctmn++;
+		return ctmn;
+	}
+	function updmn() {
+		let ctmn = countmn();
+		document.getElementById('mine').innerHTML = `<img src="./img/t${Math.floor((mine - ctmn) / 100) % 10}.png" alt="mine" style="height: 100%;"><img src="./img/t${Math.floor((mine - ctmn) / 10) % 10}.png" alt="mine" style="height: 100%;"><img src="./img/t${(mine - ctmn) % 10}.png" alt="mine" style="height: 100%;">`;
+	}
+	function check() {
+		ct = 0;
+		for (let i = 1; i <= n; i++)
+			for (let j = 1; j <= n; j++)
+				if (mp[i][j] == 1 && !grid[i][j])
+					ct++;
+		if (ct == n * m - mine)
+			return 1;
+		return 0;
+	}
+	// mp 0 没翻开 1 翻开 2 标记 3 雷
+	function upd(x, y) {
+		let e = document.getElementById(`td${x}_${y}`);
+		// css border: 0.8vmin inset black;
+		if (mp[x][y] == 0) {
+			e.innerHTML = `<span style="border: ${7.2 / n}vmin outset whitesmoke; height: 99%; display: block;"></span>`;
+		}
+		else if (mp[x][y] == 1) {
+			if (getmn(x, y) > 0)
+				e.innerHTML = `<img src="./img/num${getmn(x, y)}.png" style="height: 100%; width: 100%; float: inline-start;">`;
+			else
+				e.innerHTML = '';
+		}
+		else if (mp[x][y] == 2) {
+			e.innerHTML = `<span style="border: ${7.2 / n}vmin outset whitesmoke;/*  height: 80%; width: 80%; */float: inline-start;"><img src="./img/flag.png" style="height: 100%; width: 100%; float: inline-start;"></span>`;
+		}
+		else if (mp[x][y] == 3) {
+			e.innerHTML = `<img src="./img/mine.png" style="height: 100%; width: 100%; float: inline-start;">`;
+		}
+	}
+	function getmn(x, y) {
+		let mn = 0;
+		for (let i = Math.max(1, x - 1); i <= Math.min(n, x + 1); i++)
+			for (let j = Math.max(1, y - 1); j <= Math.min(m, y + 1); j++)
+				mn += grid[i][j];
+		return mn;
+	}
+	function open(x, y) {
+		if (mp[x][y])
+			return;
+		if (grid[x][y]) {
+			mp[x][y] = 3;
+			ctmn++;
+			updmn();
+			alert('你输了');
+			upd(x, y);
+		}
+		else {
+			ct++;
+			let mn = getmn(x, y);
+			mp[x][y] = 1;
+			if (mn) {
+				upd(x, y);
+			}
+			else {
+				upd(x, y);
+				for (let i = Math.max(1, x - 1); i <= Math.min(n, x + 1); i++)
+					for (let j = Math.max(1, y - 1); j <= Math.min(m, y + 1); j++)
+						if (!mp[i][j]) {
+							open(i, j);
+						}
+			}
+		}
+	}
+	function createmp(x, y) {
+		for (let i = 0; i < mine; i++) {
+			let xx, yy;
+			do {
+				xx = Math.floor(Math.random() * 10000) % n + 1, yy = Math.floor(Math.random() * 10000) % m + 1;
+			} while (((xx >= x - 1 && xx <= x + 1) && (yy >= y - 1 && yy <= y + 1)) || grid[xx][yy]);
+			grid[xx][yy] = 1;
+		}
+	}
+</script>
+<script src="../../nav.js"></script>
+
+</html>
