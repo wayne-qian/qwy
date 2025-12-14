@@ -69,9 +69,8 @@
 
 <body>
 
-	<div id="navi"></div>
-	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
-		Qianwenyu 的网站 </marquee>
+	
+	
 	<div class="page-container">
 		<button class="button" onclick="color='red'">红</button>
 		<button class="button" onclick="color='green'">绿</button>
@@ -81,8 +80,8 @@
 		<br>
 		<canvas class="canvas" id="c" width="80vw" height="60vh" />
 	</div>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 	<script>
+init();
 		// function href(loc) {
 		// 	window.location = loc;
 		// }
@@ -98,6 +97,7 @@
 </body>
 
 <script>
+init();
 
 	let color = 'black';
 	let canvas = document.getElementById('c');

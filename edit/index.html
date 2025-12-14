@@ -50,14 +50,14 @@
 </style>
 
 <body>
-	<div id="navi"></div>
+	
 
 	<a id="run" onclick="save()" href="./run/index.html" target="_blank" id="run" class="text"
 		style="text-decoration: none; color: black;">点击运行</a>
 	<span onclick="save()" id="save" class="text">保存</span>
 	<textarea id="text" style="width: 99%; height:70vh; font-size: 2vh; resize: none; border-radius: 0.5vw;"></textarea>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 	<script>
+init();
 		if (localStorage.getItem('code'))
 			document.getElementById('text').value = localStorage.getItem('code');
 		else

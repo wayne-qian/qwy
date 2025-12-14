@@ -79,7 +79,7 @@
 </style>
 
 <body>
-	<div id="navi"></div>
+
 	<div class="page-container container">
 		<span class="lr text" style="padding: 3%;">
 			<select id="ch" style="font-size: 3.5vmin">
@@ -108,10 +108,11 @@
 		</span>
 	</div>
 	</div>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 
 	<script>
+		init();
 		let url = 'https://ichat-api.qwy.ac/';
+		// let url = 'http://192.168.218.75:3000/';
 		let time = Date.now();
 		let start;
 		let ltch = new Array(10000);
@@ -125,82 +126,35 @@
 		// 添加
 		let add_btn = document.getElementById('confirm');
 		let cidr, peersr;
-		// function updreadch(id) {
-		// 	ltch[id] = parseInt(localStorage.getItem(to));
-		// 	document.getElementById(`rd${id_cid[id]}`).innerText = ltch[id] - rdch[id];
-		// }
-		// function updreadus(id) {
-		// 	ltus[id] = parseInt(localStorage.getItem(to));
-		// 	document.getElementById(`rd@${id_uid[id]}`).innerText = ltus[id] - rdus[id];
-		// }
 		function addch(id) {
 			// console.log(document.getElementById(`ch${id}`));
 			document.getElementById(cidr[id].cid).onclick = async () => {
-				message.innerHTML = '';
+				message.innerHTML = '正在加载...';
 				rdch[id] = ltch[id];
 				// localStorage.setItem(cidr[id].cid, rdch[id]);
 				// updreadch(id);
 				start = 0;
 				to = cidr[id].cid;
 				document.getElementById('to').innerText = 'to : ' + to;
-				// let resp = await fetch(`https://ichat-api.qwy.ac/messages/${to}?start=-1&limit=100`, {
-				// 	method: "GET",
-				// 	headers: {
-				// 		"xToken": localStorage.getItem('token')
-				// 	}
-				// })
-				// if (!resp.ok)
-				// 	throw new Error(resp.statusText);
-				// let r = await resp.json();
-				// // console.log(r);
-				// let msgs = r;
-				// message.innerHTML = '';
-				// for (let msg of msgs) {
-				// 	message.innerHTML = `<span class="text">from : <span class="sp">${msg.from}</span></span> <span class="text">to : <span class="sp">${(to == '@' + msg.from ? username : to)}</span></span><br><div class="page-container">${msg.content}</div><br>` + message.innerHTML;
-				// 	// msg.from
-				// 	// msg.to
-				// 	// msg.content
-				// 	// msg.ts // 时间戳
-				// }
-				// // start = msgs[msgs.length - 1].i + 1;
 			}
 		}
 		function addus(id) {
 			document.getElementById('@' + peersr[id].uid).onclick = async () => {
-				message.innerHTML = '';
+				message.innerHTML = '正在加载...';
 				rdus[id] = ltus[id];
 				// localStorage.setItem('@' + peersr[id].uid, rdus[id]);
 				// updreadus(id);
 				start = 0;
 				to = '@' + peersr[id].uid;
 				document.getElementById('to').innerText = 'to : ' + to;
-				// let resp = await fetch(`https://ichat-api.qwy.ac/messages/${to}?start=-1&limit=100`, {
-				// 	method: "GET",
-				// 	headers: {
-				// 		"xToken": localStorage.getItem('token')
-				// 	}
-				// })
-				// if (!resp.ok)
-				// 	throw new Error(resp.statusText);
-				// let r = await resp.json();
-				// // console.log(r);
-				// message.innerHTML = '';
-				// let msgs = r;
-				// for (let msg of msgs) {
-				// 	message.innerHTML = `<span class="text">from : <span class="sp">${msg.from}</span></span> <span class="text">to : <span class="sp">${(to == '@' + msg.from ? username : to)}</span></span><br><div class="page-container">${msg.content}</div><br>` + message.innerHTML;
-				// 	// msg.from
-				// 	// msg.to
-				// 	// msg.content
-				// 	// msg.ts // 时间戳
-				// }
-				// // start = msgs[msgs.length - 1].i + 1;
 			}
 		}
 		function addmb(cid) {
 			setTimeout(() => {
 				document.getElementById('mb' + cid).onclick = async () => {
+					modal('正在加载...');
 					let s = '频道成员 : \n';
-					let respmem = await fetch(`https://ichat-api.qwy.ac/channels/${cid}/members`, {
+					let respmem = await fetch(`${url}channels/${cid}/members`, {
 						method: "GET",
 						headers: {
 							"xToken": localStorage.getItem('token')
@@ -211,13 +165,13 @@
 					for (let member of members) {
 						s += member.uid + '\n';
 					}
-					alert(s);
+					modal(s);
 				}
 			}, 1000);
 		}
 		function getPeersChannels() {
 			(async () => {
-				let cid = await fetch("https://ichat-api.qwy.ac/channels", {
+				let cid = await fetch(`${url}channels`, {
 					method: "GET",
 					headers: {
 						"xToken": localStorage.getItem('token')
@@ -228,7 +182,7 @@
 				cidr = JSON.parse(ciddata);
 				list.innerHTML = '';
 				for (; ct < cidr.length; ct++) {
-					let name = await fetch(`https://ichat-api.qwy.ac/channels/${cidr[ct].cid}/desc`, {
+					let name = await fetch(`${url}channels/${cidr[ct].cid}/desc`, {
 						method: "GET",
 						headers: {
 							"xToken": localStorage.getItem('token')
@@ -241,7 +195,7 @@
 					addmb(cidr[ct].cid);
 					// if (!localStorage.getItem(cidr[ct].cid))
 					// 	localStorage.setItem(cidr[ct].cid, -1);
-					// let read = await fetch(`https://ichat-api.qwy.ac/messages/${cidr[ct].cid}?start=-1&limit=1`, {
+					// let read = await fetch(`${url}messages/${cidr[ct].cid}?start=-1&limit=1`, {
 					// 	method: "GET",
 					// 	headers: {
 					// 		"xToken": localStorage.getItem('token')
@@ -253,7 +207,7 @@
 					// id_cid[ct] = cidr[ct].cid;
 					// updreadch(ct);
 				}
-				let peers = await fetch("https://ichat-api.qwy.ac/peers", {
+				let peers = await fetch(`${url}peers`, {
 					method: "GET",
 					headers: {
 						"xToken": localStorage.getItem('token')
@@ -266,7 +220,7 @@
 					list.innerHTML += `<div id="@${peersr[ct].uid}" class="text">uid : ${peersr[ct].uid}</div>`;
 					// if (!localStorage.getItem('@' + peersr[ct].uid))
 					// 	localStorage.setItem('@' + peersr[ct].uid, -1);
-					// let read = await fetch(`https://ichat-api.qwy.ac/messages/@${peersr[ct].uid}?start=-1&limit=1`, {
+					// let read = await fetch(`${url}messages/@${peersr[ct].uid}?start=-1&limit=1`, {
 					// 	method: "GET",
 					// 	headers: {
 					// 		"xToken": localStorage.getItem('token')
@@ -296,14 +250,14 @@
 			let add_sel = document.getElementById('ch');
 			let add_to = document.getElementById('channel');
 			if (add_sel.value == 0) {
-				let desc_resp = await fetch("https://ichat-api.qwy.ac/desc", {
+				let desc_resp = await fetch(`${url}desc`, {
 					"method": "GET",
 					"headers": {
 						"xToken": localStorage.getItem('token')
 					}
 				});
 				let { name } = await desc_resp.json();
-				let resp = await fetch("https://ichat-api.qwy.ac/messages", {
+				let resp = await fetch(`${url}messages`, {
 					"method": "POST",
 					"headers": {
 						"Content-Type": "application/json",
@@ -318,14 +272,14 @@
 				let data = await resp.text();
 				let r = JSON.parse(data);
 				if (r.error) {
-					alert('添加失败' + r.error);
+					modal('添加失败' + r.error);
 				}
 				else
-					alert('添加成功');
+					modal('添加成功');
 				getPeersChannels();
 			}
 			else if (add_sel.value == 1) {
-				let resp = await fetch("https://ichat-api.qwy.ac/channels", {
+				let resp = await fetch(`${url}channels`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -338,14 +292,14 @@
 				let data = await resp.text();
 				let r = JSON.parse(data);
 				if (r.error) {
-					alert('创建失败' + r.error);
+					modal('创建失败' + r.error);
 				}
 				else
-					alert('创建成功');
+					modal('创建成功');
 				getPeersChannels();
 			}
 			else if (add_sel.value == 2) {
-				let resp = await fetch(`https://ichat-api.qwy.ac/channels/${add_to.value}`, {
+				let resp = await fetch(`${url}channels/${add_to.value}`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -355,14 +309,14 @@
 				let data = await resp.text();
 				let r = JSON.parse(data);
 				if (r.error) {
-					alert('加入失败' + r.error);
+					modal('加入失败' + r.error);
 				}
 				else
-					alert('加入成功');
+					modal('加入成功');
 				getPeersChannels();
 			}
 			else if (add_sel.value == 3) {
-				let resp = await fetch(`https://ichat-api.qwy.ac/channels/${add_to.value}`, {
+				let resp = await fetch(`${url}channels/${add_to.value}`, {
 					method: "DELETE",
 					headers: {
 						"Content-Type": "application/json",
@@ -372,10 +326,10 @@
 				let data = await resp.text();
 				let r = JSON.parse(data);
 				if (r.error) {
-					alert('退出失败' + r.error);
+					modal('退出失败' + r.error);
 				}
 				else
-					alert('退出成功');
+					modal('退出成功');
 				getPeersChannels();
 			}
 		}
@@ -384,7 +338,7 @@
 		let send_to = document.getElementById('user_channel');
 		let send_con = document.getElementById('text');
 		send_btn.onclick = async () => {
-			let resp = await fetch("https://ichat-api.qwy.ac/messages", {
+			let resp = await fetch(`${url}messages`, {
 				"method": "POST",
 				"headers": {
 					"Content-Type": "application/json",
@@ -399,7 +353,7 @@
 			let data = await resp.text();
 			let r = JSON.parse(data);
 			if (r.error) {
-				alert('发送失败' + r.error);
+				modal('发送失败' + r.error);
 			}
 			else {
 				send_con.value = '';
@@ -416,7 +370,7 @@
 		let to;
 		// start = 0;
 		(async () => {
-			let resp = await fetch("https://ichat-api.qwy.ac/desc", {
+			let resp = await fetch(`${url}desc`, {
 				method: "GET",
 				headers: {
 					"xToken": localStorage.getItem('token')
@@ -425,12 +379,18 @@
 			username = (await resp.json()).name;
 		})()
 			.then(() => {
+				if (!username) {
+					modal('请先登录');
+					username = '';
+				}
 				to = '@' + username;
 				document.getElementById('to').innerText = 'to : ' + to;
 				(async () => {
+					if (!username)
+						return;
 					for (; ;) {
 						try {
-							let resp = await fetch(`https://ichat-api.qwy.ac/messages/${to}?start=-1&limit=100`, {
+							let resp = await fetch(`${url}messages/${to}?start=-1&limit=100`, {
 								method: "GET",
 								headers: {
 									"xToken": localStorage.getItem('token')
@@ -456,57 +416,6 @@
 					}
 				})();
 			});
-		// (async () => {
-		// 	let since = 0;
-		// 	for (; ;) {
-		// 		try {
-		// 			let resp = await fetch(`https://ichat-api.qwy.ac/messages?since=${since}&limit=10`, {
-		// 				method: "GET",
-		// 				headers: {
-		// 					"xToken": localStorage.getItem('token')
-		// 				}
-		// 			})
-		// 			if (!resp.ok)
-		// 				throw new Error(resp.statusText);
-		// 			let r = await resp.json();
-		// 			// console.log(r);
-		// 			let msgs = r.msgs;
-		// 			console.log(msgs);
-		// 			since = r.next;
-		// 			for (let msg of msgs) {
-		// 				console.log(time);
-		// 				console.log(msg.ts);
-		// 				if (msg.ts > time) {
-		// 					console.log('0');
-		// 					if (msg.to == '@') {
-		// 						for (let i = 0; i < ltus.length; i++)
-		// 							if ('@' + id_uid[i] == msg.from) {
-		// 								console.log('1');
-		// 								ltus[i]++;
-		// 								updreadus(i);
-		// 								break;
-		// 							}
-		// 					}
-		// 					else {
-		// 						for (let i = 0; i < ltch.length; i++)
-		// 							if (id_cid[i] == msg.to) {
-		// 								console.log('2');
-		// 								ltch[i]++;
-		// 								updreadch(i);
-		// 								break;
-		// 							}
-		// 					}
-		// 				}
-		// 				// msg.from
-		// 				// msg.to
-		// 				// msg.content
-		// 				// msg.ts // 时间戳
-		// 			}
-		// 		} catch {
-		// 			await sleep(3000);
-		// 		}
-		// 	}
-		// })();
 		getPeersChannels();
 	</script>
 	<script>

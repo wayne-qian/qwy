@@ -37,10 +37,9 @@
 	}
 </style>
 
-<div id="navi"></div>
-<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;">
-	欢迎来到 Qianwenyu 的网站 </marquee>
 <img src="./img/face.png" alt="" style="display: none;">
+<img src="./img/mine.png" alt="" style="display: none;">
+<img src="./img/flag.png" alt="" style="display: none;">
 <img src="./img/t0.png" alt="" style="display: none;">
 <img src="./img/t1.png" alt="" style="display: none;">
 <img src="./img/t2.png" alt="" style="display: none;">
@@ -51,7 +50,6 @@
 <img src="./img/t7.png" alt="" style="display: none;">
 <img src="./img/t8.png" alt="" style="display: none;">
 <img src="./img/t9.png" alt="" style="display: none;">
-<img src="./img/num0.png" alt="" style="display: none;">
 <img src="./img/num1.png" alt="" style="display: none;">
 <img src="./img/num2.png" alt="" style="display: none;">
 <img src="./img/num3.png" alt="" style="display: none;">
@@ -60,7 +58,6 @@
 <img src="./img/num6.png" alt="" style="display: none;">
 <img src="./img/num7.png" alt="" style="display: none;">
 <img src="./img/num8.png" alt="" style="display: none;">
-<img src="./img/num9.png" alt="" style="display: none;">
 <center>
 	<span class="page-container" style="padding: 0.3vh; margin: 0; border-radius: 0.3vh;">
 		<span
@@ -77,9 +74,9 @@
 				</span>
 				<span style="border: 0.2vh solid black; border-radius: 0.5vmin;">
 					<button>自定义</button>
-					<input type="number" style="width: 6vmin;" id="r" placeholder="行">
-					<input type="number" style="width: 6vmin;" id="c" placeholder="列">
-					<input type="number" style="width: 6vmin;" id="mn" placeholder="雷">
+					<input type="text" style="width: 6vmin;" id="r" placeholder="行">
+					<input type="text" style="width: 6vmin;" id="c" placeholder="列">
+					<input type="text" style="width: 6vmin;" id="mn" placeholder="雷">
 					<button onclick="confirm()">确认</button>
 				</span>
 			</div>
@@ -106,6 +103,7 @@
 <body>
 </body>
 <script>
+init();
 	document.oncontextmenu = event => event.preventDefault();
 	function easy() {
 		n = 9, m = 9, mine = 10, mode = 1;
@@ -245,7 +243,7 @@
 									upd(i, j);
 								}
 						document.getElementById('mine').innerHTML = `<img src="./img/t${Math.floor(mine / 100) % 10}.png" alt="mine" style="height: 100%;"><img src="./img/t${Math.floor(mine / 10) % 10}.png" alt="mine" style="height: 100%;"><img src="./img/t${mine % 10}.png" alt="mine" style="height: 100%;">`;
-						alert('你赢了');
+						modal('你赢了');
 					}
 				}
 			}
@@ -307,7 +305,7 @@
 			mp[x][y] = 3;
 			ctmn++;
 			updmn();
-			alert('你输了');
+			modal('你输了');
 			upd(x, y);
 		}
 		else {

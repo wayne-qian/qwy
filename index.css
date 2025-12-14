@@ -6,6 +6,7 @@
 	margin-top: 1vh;
 }
 
+
 .nav {
 	border: 0.2vh solid gainsboro;
 	margin-top: 2vh;
@@ -15,13 +16,10 @@
 	border-radius: 10vh;
 	background-color: rgba(200, 200, 200, 0.5);
 	display: grid;
-	position: -webkit-sticky;
-	float: top;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-	position: -webkit-sticky;
 	float: top;
 }
 
@@ -97,4 +95,9 @@
 
 .dropdown:hover .dropbtn {
 	background-color: rgb(200, 200, 200);
+}
+
+.hover:hover 
+{
+	background-color: rgb(226, 226, 226);
 }

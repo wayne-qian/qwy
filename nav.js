@@ -6,6 +6,8 @@ let window_size = -1;
 let Nv = document.getElementsByClassName('nav')[0];
 document.getElementById('navi').innerHTML = NAV1;
 let data;
+if (localStorage.getItem('username'))
+	document.getElementById('uid').innerText = localStorage.getItem('username');
 (async () => {
 	let resp = await fetch("https://ichat-api.qwy.ac/desc", {
 		method: "GET",
@@ -18,8 +20,6 @@ let data;
 setInterval(async () => {
 	if (window.innerWidth < 1000 && window_size != 0) {
 		document.getElementById('navi').innerHTML = NAV2, window_size = 0;
-		if (data.name != undefined)
-			document.getElementById('uid').innerText = data.name;
 	}
 	else if (window.innerWidth >= 1000 && window_size != 1) {
 		document.getElementById('navi').innerHTML = NAV1, window_size = 1;
@@ -28,9 +28,11 @@ setInterval(async () => {
 			addmouse(Element[i]);
 		Tg = 0;
 		Nv = document.getElementsByClassName('nav')[0];
-		if (data.name != undefined)
-			document.getElementById('uid').innerText = data.name;
 	}
+	if (!data.error)
+		document.getElementById('uid').innerText = data.name, localStorage.setItem('username', data.name);
+	else
+		document.getElementById('uid').innerText = '', localStorage.setItem('username', '');
 }, 100);
 function tog() {
 	if (Tg == 0)
@@ -38,3 +40,9 @@ function tog() {
 	else
 		Nv.classList.add('nav'), Tg = 0;
 }
+let body = document.getElementsByTagName('body')[0];
+if (!getColor()) {
+	body.style.color = 'white';
+	body.style.backgroundColor = 'rgb(50, 50, 50)';
+}
+// body.innerHTML = '<div style="place-items: center; position: fixed; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(200, 200, 200, 0.5);"><center><span style="border-radius: 2vh; padding: 3vh; width: 40%; position: fixed; top: 1%; left: 30%; background-color: rgb(240, 240, 240);" id="modal" class="page-container"><span id="alert_text">text</span><br><span class="hover" style="float: right; background-color: grey; height: 4vh; width: 8vh; border-radius: 0.5vh;" id="alert_confirm">确认</span></span></center></div>' + body.innerHTML;

@@ -60,9 +60,8 @@
 
 <body>
 
-	<div id="navi"></div>
-	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;">
-		欢迎来到 Qianwenyu 的网站 </marquee>
+	
+	
 	<br>
 	<div class="page-container">
 		<button class="app" onclick="href('./minesweeper')">扫雷</button>
@@ -73,8 +72,8 @@
 		<button class="app" onclick="href('./paint')">画图</button>
 	</div>
 	<br>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 	<script>
+init();
 		let e = document.getElementsByClassName('app');
 		for (let i = 0; i < e.length; i++)
 			addmouse(e[i]);

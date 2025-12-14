@@ -61,42 +61,41 @@
 </style> -->
 
 <body>
-	<div id="navi"></div>
-	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
-		Qianwenyu 的网站 </marquee>
+	<!--  -->
+	<!--  -->
 
 	<!-- <a class="text" style="font-size: 5vh; color: black;" href="./chat/index.html"> -->
 	<!-- 聊天网页 -->
-	<div class="page-container" onclick="href('./app/minesweeper/index.html')" style="padding: 3vh;" id="mine">
+	<div class="page-container hover" onclick="href('./app/minesweeper/index.html')" style="padding: 3vh;" id="mine">
 		推出扫雷游戏, 点击进入
 	</div>
 	<!-- </a> -->
 	<div class="page-container">
-		<div class="text" id="upd">
-			更新 : 2025/12/10 添加扫雷游戏
-			<br>
-			点击查看详情
+		<div class="text hover" id="upd">
 		</div>
-		<textarea class="text" id="con" cols="30" rows="3" placeholder="反馈错误"></textarea>
-		<button id="submit" class="text">提交</button>
+		<div class="page-container" style="padding: 0.5vh;">
+			<div id="misc1">
+				网站数据(正在加载中)
+			</div>
+			<div id="misc2">
+				网站访问人数(正在加载中)
+			</div>
+		</div>
 		<div id="txt" class="text"></div>
+		<textarea class="text" id="con" cols="30" rows="3" placeholder="反馈错误"></textarea>
+		<button id="submit" class="text hover">提交</button>
 	</div>
 	<script>
-		// function href(loc) {
-		// 	window.location = loc;
-		// }
-		// function hrefabs(loc) {
-		// 	window.location = loc;
-		// }
-		addmouse(document.getElementById('mine'));
-		addmouse(document.getElementById('submit'));
-		addclick(document.getElementById('upd'), '更新 : 2025/12/10 <span onclick="href(\'./app/minesweeper/index.html\')" class=\"page-container\" style="padding: 0.5vh;">添加扫雷游戏</span><br>点击查看详情', '更新 : <br><div class="text">2025/12/10<br><span onclick="href(\'./app/minesweeper/index.html\')" class=\"page-container\" style="padding: 0.5vh;">添加扫雷游戏</span></div><br><div class="text">2025/11/29<br>1. 增加登录、注册功能<br>2. 增加聊天功能<br>3. 增加网站访问人数功能<br></div><div class="text">2025/11/24<br>1. 修复导航栏显示错误, 增加导航栏取消悬空功能, 宽度过低显示下拉菜单.<br>2. 增加效果,和图标.<br>3. 增加新功能, 但目前无法使用.<br></div><div class="text">2025/11/23<br>1. 优化界面.<br>2. 删除作业答案, 防止被举报.<br>3. GHC使用二级域名 : <a href="https://gaoshi.qwy.ac">gaoshi.qwy.ac</a>.<br>4. 添加计算器<br></div>');
+init();
+		let url = 'https://ichat-api.qwy.ac/';
+		// let url = 'http://192.168.218.75:3000/';
+		addclick(document.getElementById('upd'), '更新 : 2025/12/13 添加网站访问人数等数据, 增加深色模式, 优化界面, 优化聊天<br>点击查看详情', '更新 : <br><div class="text">2025/12/13<br>添加网站访问人数等数据, 增加深色模式, 优化界面, 优化聊天</div><div class="text">2025/12/10<br><span onclick="href(\'./app/minesweeper/index.html\')" class=\"page-container\" style="padding: 0.5vh;">添加扫雷游戏</span></div><br><div class="text">2025/11/29<br>1. 增加登录、注册功能<br>2. 增加聊天功能<br>3. 增加网站访问人数功能<br></div><div class="text">2025/11/24<br>1. 修复导航栏显示错误, 增加导航栏取消悬空功能, 宽度过低显示下拉菜单.<br>2. 增加效果,和图标.<br>3. 增加新功能, 但目前无法使用.<br></div><div class="text">2025/11/23<br>1. 优化界面.<br>2. 删除作业答案, 防止被举报.<br>3. GHC使用二级域名 : <a href="https://gaoshi.qwy.ac">gaoshi.qwy.ac</a>.<br>4. 添加计算器<br></div>');
 		// document.getElementById('ct').innerText = 
 		let time = Date.now();
 		document.getElementById('submit').onclick = async () => {
 			if (!document.getElementById('con').value)
 				return;
-			let resp = await fetch("https://ichat-api.qwy.ac/messages", {
+			let resp = await fetch(`${url}messages`, {
 				"method": "POST",
 				"headers": {
 					"Content-Type": "application/json",
@@ -110,15 +109,27 @@
 			});
 			let data = await resp.json();
 			if (data.error)
-				alert('反馈失败');
+				modal('反馈失败');
 			else {
-				alert('反馈成功');
+				modal('反馈成功');
 				document.getElementById('con').value = '';
 			}
 		}
+		(async () => {
+			let resp1 = await fetch(`${url}misc/stats`, {
+				"method": "GET"
+			});
+			let data1 = await resp1.json();
+			let resp2 = await fetch(`${url}misc/visits`, {
+				"method": "GET"
+			});
+			let data2 = await resp2.json();
+			document.getElementById('misc1').innerHTML = `<span class="text">注册人数 : ${data1.user}</span> <span class="text">在线人数 : ${data2.hour}</span> <span class="text">聊天频道个数 : ${data1.channel}</span>`;
+			document.getElementById('misc2').innerHTML = `<span class="text">总访问人数 : ${data2.total}</span> <span class="text">7天内访问人数 : ${data2.week}</span> <span class="text">24小时内访问人数 : ${data2.day}</span>`;
+		})();
 		document.getElementById('txt').innerText = '注册本域名的第 ' + (Math.floor(time / 24 / 60 / 60 / 1000) - 20357) + ' 天';
 	</script>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
+	<!-- <button onclick="modal('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button> -->
 </body>
 <script src="./nav.js"></script>
 

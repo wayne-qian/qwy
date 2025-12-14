@@ -34,42 +34,44 @@
 </style>
 
 <body>
-	<div id="navi"></div>
+	
 	<br>
 	<div class="page-container">
 		<center>
 			<input type="email" placeholder="用户名" id="username" style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
-			<button onclick="alert('3~15个字符, 不能数字开头, 只能包含数字和字母')"
+			<button onclick="modal('3~15个字符, 不能数字开头, 只能包含数字和字母')"
 				style="border-radius: 100px; border: 0px solid black; background-color: gainsboro;">?</button>
 			<br>
 			<br>
 			<input type="password" placeholder="密码" id="password"
 				style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
-			<button onclick="alert('6~20个字符')"
+			<button onclick="modal('6~20个字符')"
 				style="border-radius: 100px; border: 0px solid black; background-color: gainsboro;">?</button>
 			<br>
 			<br>
 			<input type="password" placeholder="确认密码" id="confirm"
 				style="height: 2vw; width: 20vw; border-radius: 0.2vw;">
-			<button onclick="alert('再输入一次密码')"
+			<button onclick="modal('再输入一次密码')"
 				style="border-radius: 100px; border: 0px solid black; background-color: gainsboro;">?</button>
 			<br>
 			<br>
 			<input type="submit" value="确认" id="submit" style="height: 2vw; width: 5vw;">
 		</center>
 	</div>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 
 	<script>
+init();
 
+		let url = 'https://ichat-api.qwy.ac/';
+		// let url = 'http://192.168.218.75:3000/';
 		document.getElementById('submit').onclick = async () => {
 
 			if (document.getElementById('password').value != document.getElementById('confirm').value) {
-				alert('密码不一致');
+				modal('密码不一致');
 				return;
 			}
 
-			let response = await fetch("https://ichat-api.qwy.ac/users", {
+			let response = await fetch(`${url}users`, {
 				"method": "POST",
 				"headers": {
 					"content-type": "application/json"
@@ -87,9 +89,9 @@
 			} else {
 				document.getElementById('username').value = document.getElementById('password').value = document.getElementById('confirm').value = '';
 				if (response.statusText == 'Conflict')
-					alert('用户名存在');
+					modal('用户名存在');
 				else
-					alert('用户名或密码不合法');
+					modal('用户名或密码不合法');
 			}
 
 		}

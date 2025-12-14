@@ -85,73 +85,88 @@
 
 	._2 {
 		background-color: rgb(255, 255, 255);
+		color: black;
 	}
 
 	._4 {
 		background-color: rgb(255, 240, 196);
+		color: black;
 	}
 
 	._8 {
 		background-color: rgb(255, 180, 180);
+		color: white;
 	}
 
 	._16 {
 		background-color: rgb(255, 140, 140);
+		color: white;
 	}
 
 	._32 {
 		background-color: rgb(255, 100, 100);
+		color: white;
 	}
 
 	._64 {
 		background-color: rgb(255, 60, 60);
+		color: white;
 	}
 
 	._128 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._256 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._512 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._1024 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._2048 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._4096 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._8192 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._16384 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._32768 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 
 	._65536 {
 		background-color: rgb(255, 240, 0);
+		color: white;
 	}
 </style>
 
 <body>
-	<div id="navi"></div>
-	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;"> 欢迎来到
-		Qianwenyu 的网站 </marquee>
+	
+	
 	<div class="page-container">
 		<center>
 			<p>用WASD操控</p>
@@ -162,15 +177,9 @@
 			</table>
 		</center>
 	</div>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 </body>
 <script>
-	// function href(loc) {
-	// 	window.location = loc;
-	// }
-	// function hrefabs(loc) {
-	// 	window.location = loc;
-	// }
+init();
 	let grid = new Array(5);
 	let score = 0;
 	setInterval(() => {

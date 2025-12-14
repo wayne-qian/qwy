@@ -60,9 +60,6 @@
 
 <body>
 
-	<div id="navi"></div>
-	<marquee scrollamount="2" scrolldelay="1" style="height: 5vh;border: 0.1vh solid grey; font-size: 3vh;">
-		欢迎来到 Qianwenyu 的网站 </marquee>
 	<br>
 	<div class="page-container">
 		<button class="app" onclick="hrefabs('https://gaoshi.qwy.ac')">搞事集团官网</button>
@@ -72,14 +69,8 @@
 		<button class="app" onclick="hrefabs('https://florr.io')">Florr</button>
 	</div>
 	<br>
-	<button onclick="alert('本网站前端作者 : qwy\n后端作者 : cola_tin')">?</button>
 	<script>
-		// function href(loc) {
-		// 	window.location = loc;
-		// }
-		// function hrefabs(loc) {
-		// 	window.location = loc;
-		// }
+init();
 		let e = document.getElementsByClassName('app');
 		console.log(e);
 		for (let i = 0; i < e.length; i++)
