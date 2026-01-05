@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>game(qwy)</title>
+</head>
+<style>
+	.unselectable {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.page-container {
+		padding: 5vh 5vh;
+		border: 0;
+		border-radius: 2vh;
+		margin-top: 1vh;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.hover:hover {
+		background: rgb(226, 226, 226);
+	}
+
+	.container {
+		display: grid;
+		margin-top: 3vh;
+		grid-template-columns: 1.5fr 90vh;
+		gap: 1vh;
+	}
+
+	table {
+		border-collapse: collapse;
+		padding: 0;
+		margin: 0;
+		border: 0;
+	}
+
+	td {
+		border-collapse: collapse;
+		padding: 0;
+		margin: 0;
+		border: 0;
+		text-align: center;
+		vertical-align: center;
+	}
+</style>
+
+<body id="body">
+	<div style="z-index: 10000; height: 100%; width: 100%; font-size: 10vh; color: whitesmoke; text-align: center; position: absolute;"
+		id="load">
+		<br>
+		<br>
+		<br>
+		Loading...
+	</div>
+	<div class="container">
+		<div>
+			<div class="page-container" style="text-align: center; padding: 2vh 1vh; font-size: 2vh;" onclick="modal('按下WASD移动, 空格键攻击. 红色的方块都是你的敌人. 在击杀敌人后你会获得掉落物. 点击装备它们. 合成可以使它们变得更强大. 继续击杀敌人以升级. 天赋点可以让你变强.');">?</div>
+			<div class="page-container " style="padding: 1vh; height: 5vh; font-size: 2vh;" id="level"></div>
+			<div class="page-container " style="padding: 2vh 1vh; height: 40vh; font-size: 2vh; overflow: scroll;"
+				id="attribute">
+				<span class="page-container " style="padding: 0.1vh 0.5vh;" id="tp">TP</span>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh;">
+					health ×3
+					<br>
+					生命值 ×3
+					<span style="float: right;">
+						<span onclick="minusTalent(0)" class="page-container unselectable"
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp0" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(0)" class="page-container unselectable"
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh; ">
+					health regeneration speed ×3
+					<br>
+					回血速度 ×3
+					<span style="float: right;">
+						<span onclick="minusTalent(5)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp5" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(5)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh; ">
+					reduce weapons' startup & recovery by 15%
+					<br>
+					减少 15% 武器前后摇时间
+					<span style="float: right;">
+						<span onclick="minusTalent(1)" class="page-container unselectable"
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp1" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(1)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh; ">
+					increase weapons' damage by 20%
+					<br>
+					增加 20% 武器伤害
+					<span style="float: right;">
+						<span onclick="minusTalent(2)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp2" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(2)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh; ">
+					increase weapons' pierce damage by 15%
+					<br>
+					增加 15% 穿刺伤害
+					<span style="float: right;">
+						<span onclick="minusTalent(3)" class="page-container unselectable"
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp3" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(3)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh; ">
+					reduce enemies' resistance by 5%
+					<br>
+					降低敌人 5% 抗性
+					<span style="float: right;">
+						<span onclick="minusTalent(4)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp4" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(4)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+				<div class="page-container " style="padding: 1vh; font-size: 2vh; ">
+					increase your movement speed by 30%
+					<br>
+					增加 30% 倍移速
+					<span style="float: right;">
+						<span onclick="minusTalent(6)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">-</span>
+						<span id="tp6" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">0</span>
+						<span onclick="addTalent(6)" class="page-container unselectable "
+							style="font-size: 2vh; padding: 0.1vh 0.5vh;">+</span>
+					</span>
+				</div>
+			</div>
+			<div class="page-container " style="padding: 0; height: 30vh; font-size: 2vh; overflow: scroll;" id="drop">
+			</div>
+		</div>
+		<div class="page-container " style="padding: 0; height: 90vh; overflow: hidden; position: relative;" id="game">
+			<div class="page-container "
+				style="height: 5vh; width: 5vh; padding: 0.3vh; float: left; position: absolute; left: 42.5vh; top: 42.5vh; background-color: rgb(0, 256, 0); color: rgb(0, 256, 0);">
+				1</div>
+		</div>
+	</div>
+	<div style="position: absolute; top: 1vh; left: 1vh; display: none; background-color: rgba(0, 0, 0, 0.8); color: white;"
+		class="page-container " id="weapon">
+	</div>
+</body>
+<script src="./map.js"></script>
+<script>
+	// document.oncontextmenu = event => event.preventDefault();
+	let color = ['#7EEF6D', '#FFE65D', '#4d52e3', '#861FDE', '#DE1F1F', '#1fdbde', '#ff2b75', '#2bffa3', '#555555'];
+	let loading = document.getElementById('load');
+	let body = document.getElementsByTagName('body')[0];
+	loading.style.backgroundColor = color[Math.floor(Math.random() * 100000) % 9];
+	let gameData;
+	let posx = 8, posy = 8, sp = 0.032, spx = 0, spy = 0, atk = 0, health, heal = 10, isD = 0, damageText = '';
+	let token = localStorage.getItem('token');
+	// let url = 'http://192.168.218.75:3000/';
+	let url = 'https://ichat-api.qwy.ac/';
+	let isStart = 1, isShow = 0;
+	let drop = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+	let levelName = ['Common', 'Unusual', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Ultra', 'Super', 'Unique'];
+	let enemyDamageText = new Array(1000), enemyDamageCt = new Array(1000);
+	let level = 1, exp = 0, tp;
+	let tpCt = [0, 0, 0, 0, 0, 0, 0];
+	let textColor = ['#79EB68', '#FAE158', '#484ddd', '#811AD9', '#D91A1A', '#1ad6d9', '#fa1670', '#16fa9e', '#505050'];
+	let maxHealth = 100, load = 1, dmgMul = 1, pDmgMul = 1, minRes = 0, healMul = 1, spMul = 1;
+	let enemyType = [
+		[
+			{ name: 'sword', health: 100, sightRange: 40, speed: 0.02, damage: 30, damageRange: 20, startup: 200, recovery: 100, drop: [{ p: 1, type: 0, level: 0 }], exp: 1, shield: 10, resistance: 10 },
+			{ name: 'knife', health: 90, sightRange: 40, speed: 0.03, damage: 20, damageRange: 10, startup: 100, recovery: 100, drop: [{ p: 1, type: 1, level: 0 }], exp: 1, shield: 10, resistance: 10 },
+			{ name: 'spear', health: 120, sightRange: 40, speed: 0.02, damage: 40, damageRange: 30, startup: 100, recovery: 500, drop: [{ p: 1, type: 2, level: 0 }], exp: 1, shield: 10, resistance: 10 }
+		],
+		[
+			{ name: 'sword', health: 500, sightRange: 40, speed: 0.03, damage: 90, damageRange: 21, startup: 180, recovery: 80, drop: [{ p: 0.2, type: 0, level: 0 }, { p: 1, type: 0, level: 1 }], exp: 5, shield: 50, resistance: 20 },
+			{ name: 'knife', health: 400, sightRange: 40, speed: 0.04, damage: 60, damageRange: 11, startup: 90, recovery: 90, drop: [{ p: 0.2, type: 1, level: 0 }, { p: 1, type: 1, level: 1 }], exp: 5, shield: 50, resistance: 20 },
+			{ name: 'spear', health: 600, sightRange: 40, speed: 0.03, damage: 120, damageRange: 31, startup: 80, recovery: 480, drop: [{ p: 0.2, type: 2, level: 0 }, { p: 1, type: 2, level: 1 }], exp: 5, shield: 50, resistance: 20 }
+		],
+		[
+			{ name: 'sword', health: 2500, sightRange: 40, speed: 0.04, damage: 270, damageRange: 22, startup: 160, recovery: 60, drop: [{ p: 0.1, type: 0, level: 0 }, { p: 0.4, type: 0, level: 1 }, { p: 1, type: 0, level: 2 }], exp: 25, shield: 250, resistance: 30 },
+			{ name: 'knife', health: 2000, sightRange: 40, speed: 0.05, damage: 180, damageRange: 12, startup: 85, recovery: 85, drop: [{ p: 0.1, type: 1, level: 0 }, { p: 0.4, type: 1, level: 1 }, { p: 1, type: 1, level: 2 }], exp: 25, shield: 250, resistance: 30 },
+			{ name: 'spear', health: 3000, sightRange: 40, speed: 0.04, damage: 360, damageRange: 32, startup: 60, recovery: 460, drop: [{ p: 0.1, type: 2, level: 0 }, { p: 0.4, type: 2, level: 1 }, { p: 1, type: 2, level: 2 }], exp: 25, shield: 250, resistance: 30 }
+		],
+		[
+			{ name: 'sword', health: 12500, sightRange: 40, speed: 0.05, damage: 810, damageRange: 23, startup: 150, recovery: 50, drop: [{ p: 0.1, type: 0, level: 1 }, { p: 0.6, type: 0, level: 2 }, { p: 1, type: 0, level: 3 }], exp: 125, shield: 1250, resistance: 40 },
+			{ name: 'knife', health: 10000, sightRange: 40, speed: 0.06, damage: 540, damageRange: 13, startup: 80, recovery: 80, drop: [{ p: 0.1, type: 1, level: 1 }, { p: 0.6, type: 1, level: 2 }, { p: 1, type: 1, level: 3 }], exp: 125, shield: 1250, resistance: 40 },
+			{ name: 'spear', health: 15000, sightRange: 40, speed: 0.05, damage: 1080, damageRange: 33, startup: 50, recovery: 450, drop: [{ p: 0.1, type: 2, level: 1 }, { p: 0.6, type: 2, level: 2 }, { p: 1, type: 2, level: 3 }], exp: 125, shield: 1250, resistance: 40 }
+		],
+		[
+			{ name: 'sword', health: 62500, sightRange: 40, speed: 0.06, damage: 2430, damageRange: 24, startup: 140, recovery: 40, drop: [{ p: 0.1, type: 0, level: 2 }, { p: 0.8, type: 0, level: 3 }, { p: 1, type: 0, level: 4 }], exp: 625, shield: 6250, resistance: 50 },
+			{ name: 'knife', health: 50000, sightRange: 40, speed: 0.07, damage: 1620, damageRange: 14, startup: 80, recovery: 80, drop: [{ p: 0.1, type: 1, level: 2 }, { p: 0.8, type: 1, level: 3 }, { p: 1, type: 1, level: 4 }], exp: 625, shield: 6250, resistance: 50 },
+			{ name: 'spear', health: 75000, sightRange: 40, speed: 0.06, damage: 3240, damageRange: 34, startup: 50, recovery: 440, drop: [{ p: 0.1, type: 2, level: 2 }, { p: 0.8, type: 2, level: 3 }, { p: 1, type: 2, level: 4 }], exp: 625, shield: 6250, resistance: 50 }
+		],
+		[
+			{ name: 'sword', health: 312500, sightRange: 40, speed: 0.07, damage: 7290, damageRange: 25, startup: 130, recovery: 30, drop: [{ p: 0.1, type: 0, level: 3 }, { p: 0.85, type: 0, level: 4 }, { p: 1, type: 0, level: 5 }], exp: 3750, shield: 31250, resistance: 60 },
+			{ name: 'knife', health: 250000, sightRange: 40, speed: 0.08, damage: 4860, damageRange: 15, startup: 78, recovery: 78, drop: [{ p: 0.1, type: 1, level: 3 }, { p: 0.85, type: 1, level: 4 }, { p: 1, type: 1, level: 5 }], exp: 3750, shield: 31250, resistance: 60 },
+			{ name: 'spear', health: 225000, sightRange: 40, speed: 0.07, damage: 9720, damageRange: 35, startup: 40, recovery: 430, drop: [{ p: 0.1, type: 2, level: 3 }, { p: 0.85, type: 2, level: 4 }, { p: 1, type: 2, level: 5 }], exp: 3750, shield: 31250, resistance: 60 }
+		],
+		[
+			{ name: 'sword', health: 1562500, sightRange: 40, speed: 0.08, damage: 21870, damageRange: 26, startup: 130, recovery: 30, drop: [{ p: 0.1, type: 0, level: 4 }, { p: 0.9, type: 0, level: 5 }, { p: 1, type: 0, level: 6 }], exp: 26250, shield: 156250, resistance: 70 },
+			{ name: 'knife', health: 1250000, sightRange: 40, speed: 0.09, damage: 14580, damageRange: 16, startup: 78, recovery: 78, drop: [{ p: 0.1, type: 1, level: 4 }, { p: 0.9, type: 1, level: 5 }, { p: 1, type: 1, level: 6 }], exp: 26250, shield: 156250, resistance: 70 },
+			{ name: 'spear', health: 1125000, sightRange: 40, speed: 0.08, damage: 29160, damageRange: 36, startup: 40, recovery: 430, drop: [{ p: 0.1, type: 2, level: 4 }, { p: 0.9, type: 2, level: 5 }, { p: 1, type: 2, level: 6 }], exp: 26250, shield: 156250, resistance: 70 }
+		],
+		[
+			{ name: 'sword', health: 15625000, sightRange: 45, speed: 0.1, damage: 65610, damageRange: 26, startup: 110, recovery: 30, drop: [{ p: 0.1, type: 0, level: 5 }, { p: 0.94, type: 0, level: 6 }, { p: 1, type: 0, level: 7 }], exp: 236250, shield: 781250, resistance: 80 },
+			{ name: 'knife', health: 12500000, sightRange: 45, speed: 0.12, damage: 43740, damageRange: 16, startup: 70, recovery: 70, drop: [{ p: 0.1, type: 1, level: 5 }, { p: 0.94, type: 1, level: 6 }, { p: 1, type: 1, level: 7 }], exp: 236250, shield: 781250, resistance: 80 },
+			{ name: 'spear', health: 11250000, sightRange: 45, speed: 0.1, damage: 87480, damageRange: 36, startup: 40, recovery: 400, drop: [{ p: 0.1, type: 2, level: 5 }, { p: 0.94, type: 2, level: 6 }, { p: 1, type: 2, level: 7 }], exp: 236250, shield: 781250, resistance: 80 }
+		],
+		[
+			{ name: 'sword', health: 156250000, sightRange: 50, speed: 0.12, damage: 65610, damageRange: 26, startup: 110, recovery: 30, drop: [{ p: 0.96, type: 0, level: 7 }, { p: 1, type: 0, level: 8 }], exp: 2362500, shield: 7812500, resistance: 90 },
+			{ name: 'knife', health: 125000000, sightRange: 50, speed: 0.14, damage: 43740, damageRange: 16, startup: 70, recovery: 70, drop: [{ p: 0.96, type: 1, level: 7 }, { p: 1, type: 1, level: 8 }], exp: 2362500, shield: 7812500, resistance: 90 },
+			{ name: 'spear', health: 112500000, sightRange: 50, speed: 0.12, damage: 87480, damageRange: 36, startup: 40, recovery: 400, drop: [{ p: 0.96, type: 2, level: 7 }, { p: 1, type: 2, level: 8 }], exp: 2362500, shield: 7812500, resistance: 90 }
+		]
+	], enemy = [];
+	let weapon = [[
+		{ name: 'sword', damage: 40, pierceDamage: 10, range: 30, startup: 200, recovery: 100 },
+		{ name: 'sword', damage: 200, pierceDamage: 30, range: 31, startup: 180, recovery: 90 },
+		{ name: 'sword', damage: 1000, pierceDamage: 90, range: 32, startup: 160, recovery: 80 },
+		{ name: 'sword', damage: 5000, pierceDamage: 270, range: 33, startup: 140, recovery: 70 },
+		{ name: 'sword', damage: 25000, pierceDamage: 810, range: 34, startup: 120, recovery: 60 },
+		{ name: 'sword', damage: 125000, pierceDamage: 2430, range: 35, startup: 100, recovery: 50 },
+		{ name: 'sword', damage: 625000, pierceDamage: 7290, range: 36, startup: 85, recovery: 45 },
+		{ name: 'sword', damage: 3125000, pierceDamage: 21870, range: 37, startup: 80, recovery: 40 },
+		{ name: 'sword', damage: 31250000, pierceDamage: 218700, range: 38, startup: 70, recovery: 30 },
+	],
+	[
+		{ name: 'knife', damage: 25, pierceDamage: 4, range: 20, startup: 80, recovery: 92 },
+		{ name: 'knife', damage: 125, pierceDamage: 12, range: 21, startup: 75, recovery: 84 },
+		{ name: 'knife', damage: 625, pierceDamage: 36, range: 22, startup: 70, recovery: 76 },
+		{ name: 'knife', damage: 3125, pierceDamage: 108, range: 23, startup: 65, recovery: 71 },
+		{ name: 'knife', damage: 15625, pierceDamage: 324, range: 24, startup: 60, recovery: 65 },
+		{ name: 'knife', damage: 78125, pierceDamage: 972, range: 25, startup: 55, recovery: 60 },
+		{ name: 'knife', damage: 390625, pierceDamage: 2916, range: 26, startup: 50, recovery: 55 },
+		{ name: 'knife', damage: 1953125, pierceDamage: 8748, range: 27, startup: 45, recovery: 50 },
+		{ name: 'knife', damage: 19531250, pierceDamage: 87480, range: 28, startup: 35, recovery: 40 },
+	],
+	[
+		{ name: 'spear', damage: 10, pierceDamage: 15, range: 40, startup: 100, recovery: 250 },
+		{ name: 'spear', damage: 30, pierceDamage: 75, range: 40, startup: 100, recovery: 240 },
+		{ name: 'spear', damage: 90, pierceDamage: 375, range: 40, startup: 90, recovery: 230 },
+		{ name: 'spear', damage: 270, pierceDamage: 1875, range: 40, startup: 90, recovery: 220 },
+		{ name: 'spear', damage: 810, pierceDamage: 9375, range: 40, startup: 80, recovery: 210 },
+		{ name: 'spear', damage: 2430, pierceDamage: 46875, range: 40, startup: 80, recovery: 200 },
+		{ name: 'spear', damage: 9720, pierceDamage: 234375, range: 40, startup: 70, recovery: 190 },
+		{ name: 'spear', damage: 29160, pierceDamage: 1171875, range: 40, startup: 70, recovery: 180 },
+		{ name: 'spear', damage: 291600, pierceDamage: 11718750, range: 40, startup: 60, recovery: 170 },
+	]
+	];
+	let weaponType = 0, weaponLevel = 0;
+	let wait = 35;
+	(async () => {
+		gameData = await initGet();
+		body.innerHTML += `<center><div style="display: none; position: fixed; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(200, 200, 200, 0.1); color: black;" id="alert_cover"><span style="border-radius: 2vh; padding: 3vh; width: 40%; position: fixed; top: 0.5vw; left: 30%; background-color: rgb(240, 240, 240);" class="page-container " id="alert_container"><span id="alert_text">text</span><br><span style="float: right; height: 4vh; width: 8vh; border-radius: 0.5vh; color: rgb(0, 200, 0);" class="hover" id="alert_confirm">确认</span></span></div></center>`;
+		document.getElementById('alert_confirm').onclick = () => {
+			isStart = 1;
+			posx = 8, posy = 8;
+			health = maxHealth;
+			document.getElementById('alert_cover').style.display = 'none';
+		}
+		for (let i = 0; i < 3; i++)
+			for (let j = 0; j < 9; j++)
+				drop[i][j] = await get(`drop${i}${j}`, 0);
+		for (let i = 0; i < enemyDamageText.length; i++)
+			enemyDamageText[i] = '', enemyDamageCt[i] = 0;
+		level = await get('level', 1);
+		exp = await get('exp', 0);
+		tp = level - 1;
+		for (let i = 0; i < tpCt.length; i++) {
+			tpCt[i] = await get(`tp${i}`, 0);
+			for (let j = 1; j <= tpCt[i]; j++)
+				tp -= j;
+		}
+		updateTpAttribute();
+		health = maxHealth;
+		// if (level == 1)
+		// 	modal('Press WASD to MOVE, Space to ATTACK. The red squares are your enemies. You\'ll get the weapons after you kill them. Click to equip one of the weapons. Merge to make them stronger. Keep killing the enemies to level up. Talent Points can make you powerful.<br>按下WASD移动, 空格键攻击. 红色的方块都是你的敌人. 在击杀敌人后你会获得掉落物. 点击装备它们. 合成可以使它们变得更强大. 继续击杀敌人以升级. 天赋点可以让你变强.');
+		weaponType = await get('wT', 0);
+		weaponLevel = await get('wL', 0);
+		generateEnemy();
+		updateDrop();
+		updateLevel();
+		updateTp();
+		start();
+		setInterval(() => {
+			if (isStart)
+				health = Math.min(health + heal * healMul / 10, maxHealth);
+		}, 100);
+		setInterval(() => {
+			if (isStart) {
+				move();
+				refresh();
+			}
+		}, wait);
+		document.onkeydown = (e) => {
+			if (weaponType == 1)
+				wp = 2;
+			else
+				wp = 1;
+			if (e.key == 'w' && spx >= 0)
+				spx -= sp * spMul * wait * wp;
+			if (e.key == 'a' && spy >= 0)
+				spy -= sp * spMul * wait * wp;
+			if (e.key == 's' && spx <= 0)
+				spx += sp * spMul * wait * wp;
+			if (e.key == 'd' && spy <= 0)
+				spy += sp * spMul * wait * wp;
+			if (e.key == ' ' && !atk) {
+				atk++;
+				if (isStart)
+					attack();
+			}
+		}
+		document.onkeyup = (e) => {
+			if (e.key == 'w')
+				spx += sp * spMul * wait * wp;
+			if (e.key == 'a')
+				spy += sp * spMul * wait * wp;
+			if (e.key == 's')
+				spx -= sp * spMul * wait * wp;
+			if (e.key == 'd')
+				spy -= sp * spMul * wait * wp;
+		}
+	})();
+	async function initGet() {
+		let resp;
+		await fetch(`${url}data/game`, {
+			method: "GET",
+			headers: {
+				"xToken": token,
+				"content-type": "application/json",
+			},
+		}).then((res) => {
+			resp = res;
+		});
+		if (resp.status == 401) {
+			alert('请先登录');
+			// window.location = 'file:///Users/wayne/Documents/html/game/login.html';
+			window.location = 'https://www.qwy.ac/login/';
+		}
+		return await resp.json();
+	}
+	// function get(id, init) {
+	// 	if (localStorage.getItem(id))
+	// 		return parseInt(localStorage.getItem(id));
+	// 	localStorage.setItem(id, init);
+	// 	return parseInt(init);
+	// }
+	// function post(id, value) {
+	// 	localStorage.setItem(id, value);
+	// }
+	async function get(key, init) {
+		if (gameData[key]) {
+			return parseInt(gameData[key]);
+		}
+		else {
+			await post(key, init);
+			return parseInt(init);
+		}
+	}
+	async function post(key, value) {
+		gameData[key] = parseInt(value);
+		let resp = await fetch(`${url}data/game`, {
+			method: "PUT",
+			headers: {
+				"xToken": token,
+				"content-type": "application/json",
+			},
+			body: JSON.stringify(gameData),
+		});
+	}
+	function addTalent(id) {
+		if (tp < tpCt[id] + 1)
+			return;
+		tp -= tpCt[id] + 1;
+		tpCt[id]++;
+		updateTp2(id);
+	}
+	function minusTalent(id) {
+		if (tpCt[id] <= 0)
+			return;
+		tp += tpCt[id];
+		tpCt[id]--;
+		updateTp2(id);
+	}
+	function calExp(lv) {
+		let e = 10;
+		for (let i = 1; i < lv; i++)
+			e = Math.floor(e * 1.13);
+		return e;
+	}
+	function attack() {
+		let curW = weapon[weaponType][weaponLevel];
+		setTimeout(() => {
+			for (let i = 0; i < enemy.length; i++) {
+				let e = enemy[i];
+				let eT = enemyType[e.type];
+				if (!e.alive)
+					continue;
+				let dx = posx - e.posx, dy = posy - e.posy;
+				let dis = Math.sqrt(dx * dx + dy * dy);
+				let dmg = enemyDamage(curW.damage, curW.pierceDamage, i);
+				if (dmg > 0.3 * e.health)
+					enemyRecovery(dmg, i);
+				if (dis <= curW.range) {
+					e.health -= dmg;
+					enemyDamageText[i] += '-' + dmg + '\n';
+					enemyDamageCt[i]++;
+					setTimeout(() => {
+						enemyDamageCt[i]--;
+						if (!enemyDamageCt[i])
+							enemyDamageText[i] = '';
+					}, 1000);
+				}
+				if (e.health <= 0)
+					kill(i);
+			}
+			setTimeout(() => {
+				atk--;
+			}, curW.recovery * load);
+		}, curW.startup * load);
+	}
+	function loadSuccessfully() {
+		loading.style.display = 'none';
+		loading.innerHTML = loading.innerHTML;
+	}
+	function updateTpAttribute() {
+		let res = 1;
+		for (let i = 0; i < tpCt[0]; i++)
+			res *= 3;
+		maxHealth = 100 * res;
+		res = 1;
+		for (let i = 0; i < tpCt[1]; i++)
+			res *= 0.85;
+		load = res;
+		res = 1;
+		for (let i = 0; i < tpCt[2]; i++)
+			res *= 1.2;
+		dmgMul = res;
+		res = 1;
+		for (let i = 0; i < tpCt[3]; i++)
+			res *= 1.15;
+		pDmgMul = res;
+		res = 0;
+		for (let i = 0; i < tpCt[4]; i++)
+			res += 5;
+		minRes = res;
+		res = 1;
+		for (let i = 0; i < tpCt[5]; i++)
+			res *= 3;
+		healMul = res;
+		res = 1;
+		for (let i = 0; i < tpCt[6]; i++)
+			res *= 1.3;
+		spMul = res;
+	}
+	function enemyAttack(id) {
+		let e = enemy[id];
+		let eT = enemyType[e.level][e.type];
+		e.isAttack++;
+		setTimeout(() => {
+			let dx = posx - e.posx, dy = posy - e.posy;
+			let dis = Math.sqrt(dx * dx + dy * dy);
+			if (dis <= eT.damageRange) {
+				let dmg = playerDamage(eT.damage);
+				if (dmg > 0.3 * health)
+					playerRecovery(dmg);
+				health -= dmg;
+				isD++;
+				damageText += '-' + dmg + '\n';
+				setTimeout(() => {
+					isD--;
+					if (!isD)
+						damageText = '';
+				}, 1000);
+				if (health <= 0) {
+					health = 0;
+					isStart = 0;
+					setTimeout(() => {
+						modal('You die!<br>你死了!');
+					}, 100)
+				}
+			}
+			setTimeout(() => {
+				e.isAttack--;
+			}, eT.recovery);
+		}, eT.startup);
+	}
+	function kill(id) {
+		enemy[id].alive = 0;
+		exp += parseInt(enemyType[enemy[id].level][enemy[id].type].exp);
+		updateLevel();
+		getDrop(id);
+	}
+	async function setWeapon(i, j) {
+		if (drop[i][j]) {
+			weaponType = i;
+			weaponLevel = j;
+			await post('wT', i);
+			await post('wL', j);
+		}
+	}
+	async function mergeWeapon() {
+		for (let i = 0; i < 3; i++)
+			for (let j = 0; j < 9; j++) {
+				if (drop[i][j] >= (1 << (j + 1)) && j < 8) {
+					drop[i][j + 1] += Math.floor(drop[i][j] / (1 << (j + 1))), drop[i][j] %= (1 << (j + 1));
+					if (weaponType == i && weaponLevel == j && drop[i][j] == 0)
+						weaponLevel = j + 1;
+				}
+			}
+		updateDrop();
+	}
+	function getDrop(id) {
+		let dr = 0;
+		let e = enemy[id];
+		let eT = enemyType[e.level][e.type];
+		for (; ; dr++) {
+			let rd = Math.random();
+			if (rd <= eT.drop[dr].p)
+				break;
+		}
+		drop[eT.drop[dr].type][eT.drop[dr].level]++;
+		updateDrop2(eT.drop[dr].type, eT.drop[dr].level);
+	}
+	async function updateTp() {
+		tp = level - 1;
+		for (let i = 0; i < tpCt.length; i++)
+			for (let j = 1; j <= tpCt[i]; j++)
+				tp -= j;
+		document.getElementById('tp').innerText = 'TP : ' + tp;
+		for (let i = 0; i < tpCt.length; i++) {
+			document.getElementById(`tp${i}`).innerText = `${tpCt[i]} (${tp}/${parseInt(tpCt[i]) + 1})`;
+		}
+		updateTpAttribute();
+		// for (let i = 0; i < tpCt.length; i++)
+		// 	await post(`tp${i}`, tpCt[i]);
+	}
+	async function updateTp2(x) {
+		updateTp();
+		await post(`tp${x}`, tpCt[x]);
+	}
+	async function updateDrop() {
+		let dr = document.getElementById('drop');
+		dr.innerHTML = '<span style="border-radius: 1vh; padding: 1vh 2vh; margin-top: 1vh; line-height: 5.5vh; font-size: 2.5vh;" onclick="mergeWeapon()" class="hover page-container unselectable ">merge</span><br>';
+		for (let i = 0; i < 3; i++) {
+			dr.innerHTML += `<div class="page-container unselectable " style="border-radius: 1vh; padding: 1vh 0.1vh; margin-top: 1vh; line-height: 3vh; font-size: 2.5vh; display: inline-grid; width: 8vh; text-align: center;">${weapon[i][0].name}</div>`;
+			for (let j = 0; j < 9; j++) {
+				dr.innerHTML += `<span style="border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon()">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
+			}
+			dr.innerHTML += '<br>';
+		}
+		for (let i = 0; i < 3; i++)
+			for (let j = 0; j < 9; j++)
+				await post(`drop${i}${j}`, drop[i][j]);
+	}
+	async function updateDrop2(x, y) {
+		let dr = document.getElementById('drop');
+		dr.innerHTML = '<span style="border-radius: 1vh; padding: 1vh 2vh; margin-top: 1vh; line-height: 5.5vh; font-size: 2.5vh;" onclick="mergeWeapon()" class="hover page-container unselectable ">merge</span><br>';
+		for (let i = 0; i < 3; i++) {
+			dr.innerHTML += `<div class="page-container unselectable " style="border-radius: 1vh; padding: 1vh 0.1vh; margin-top: 1vh; line-height: 3vh; font-size: 2.5vh; display: inline-grid; width: 8vh; text-align: center;">${weapon[i][0].name}</div>`;
+			for (let j = 0; j < 9; j++) {
+				dr.innerHTML += `<span style="border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon()">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
+			}
+			dr.innerHTML += '<br>';
+		}
+		await post(`drop${x}${y}`, drop[x][y]);
+	}
+	async function updateLevel() {
+		let lExp = parseInt(calExp(level));
+		while (exp >= lExp) {
+			level++, exp -= lExp;
+			lExp = parseInt(calExp(level));
+		}
+		updateTp();
+		await post('level', level);
+		await post('exp', exp);
+		document.getElementById('level').innerHTML = `level : ${level}<br>exp : ${exp}/${calExp(level)}`;
+	}
+	function generateEnemy() {
+		let sx = [0, 0, 0, 300, 300, 300, 600, 600, 600], sy = [0, 300, 600, 600, 300, 0, 0, 300, 600]
+		for (let l = 0; l < 9; l++) {
+			for (let i = 1; i <= 12; i++) {
+				let rx, ry, rt;
+				if (l)
+					rx = Math.random() * 10000 % 300, ry = Math.random() * 10000 % 300, rt = Math.floor(Math.random() * 10000) % 3;
+				else
+					rx = Math.random() * 10000 % 240 + 60, ry = Math.random() * 10000 % 240 + 60, rt = Math.floor(Math.random() * 10000) % 3;
+				createEnemy(l, rt, rx + sx[l], ry + sy[l]);
+			}
+		}
+	}
+	function createEnemy(level, type, x, y) {
+		enemy.push({ level: level, type: type, posx: x, posy: y, health: enemyType[level][type].health, alive: 1, isAttack: 0 });
+	}
+	function start() {
+		let game = document.getElementById('game');
+		game.innerHTML = `<div class="page-container unselectable " style="z-index: 1000; line-height: 10vh; text-align: center; width: 10vh; padding: 0.3vh; float: left; position: absolute; left: 40vh; top: 40vh; background-color: rgba(0, 256, 0, 0.8); color: rgba(0, 0, 0, 1); font-size: 2.5vh;"><span id="playerhealth" style="font-size: 2.5vh;"></span><span style="color: red; position: absolute; top: 3vh; left: 12vh; font-size: 2vh;" id="pd"></span></div>`;
+		for (let i = 0; i < enemy.length; i++) {
+			let e = enemy[i];
+			let eT = enemyType[e.level][e.type];
+			game.innerHTML += `<div class="page-container unselectable " style="z-index: 1000; line-height: 5vh; text-align: center; width: 10vh; padding: 0.3vh; float: left; position: absolute; left: ${1000}vh; top: ${1000}vh; background-color: rgba(256, 0, 0, 0.8); color: rgba(0, 0, 0, 1); font-size: 2.5vh;" id="e${i}" onmouseenter="showEnemy(${e.level}, ${e.type})">${eT.name}</span><br><span style="font-size: 2.5vh;" id="eh${i}"></span><span style="color: red; position: absolute; top: 3vh; left: 12vh; font-size: 2vh;" id="ed${i}"></span><span class="page-container unselectable " style="color: ${textColor[e.level]}; position: absolute; padding: 0.1vh 0.3vh; background-color: white; top: 10vh; left: 8vh; font-size: 2vh;">${levelName[e.level]}</span></div>`
+		}
+		game.innerHTML += '<div id="map" style="z-index: 0; margin: 0; padding: 0; float: left; position: absolute; left: 1000vh; top: 1000vh;"></div>';
+		document.getElementById('load').style.display = 'none';
+	}
+	function refresh() {
+		document.getElementById('playerhealth').innerText = Math.round(health);
+		document.getElementById('pd').innerHTML = damageText;
+		for (let i = 0; i < enemy.length; i++) {
+			let e = enemy[i];
+			let eT = enemyType[e.level][e.type];
+			if (!e.alive) {
+				document.getElementById(`e${i}`).style.display = 'none';
+				continue;
+			}
+			let dx = posx - e.posx, dy = posy - e.posy;
+			let dis = Math.sqrt(dx * dx + dy * dy);
+			if (dis <= eT.sightRange && dis > eT.damageRange / 2) {
+				e.posx += dx / dis * eT.speed * wait;
+				e.posy += dy / dis * eT.speed * wait;
+			}
+			if (dis <= eT.damageRange * 0.9 && !e.isAttack)
+				enemyAttack(i);
+			let obj = document.getElementById(`e${i}`);
+			obj.style.top = 40 - dx + 'vh';
+			obj.style.left = 40 - dy + 'vh';
+			document.getElementById(`eh${i}`).innerText = Math.round(e.health);
+			document.getElementById(`ed${i}`).innerHTML = enemyDamageText[i];
+			document.getElementById('map').style.top = 0 - (posx + 15) % 30 + 'vh';
+			document.getElementById('map').style.left = 0 - (posy + 15) % 30 + 'vh';
+			let mp = `<table style="z-index: 0; margin: 0; padding: 0;">`;
+			for (let i = Math.floor((posx + 15) / 30) - 1; i <= Math.floor((posx + 15) / 30) + 2; i++) {
+				mp += '<tr>';
+				for (let j = Math.floor((posy + 15) / 30) - 1; j <= Math.floor((posy + 15) / 30) + 2; j++) {
+					if (i > 0 && j > 0 && i <= 30 && j <= 30)
+						mp += map[i - 1][j - 1];
+					else
+						mp += '<td style="border: 0.1vh solid white; height: 29.95vh; min-width: 29.95vh; background-color: #FFFFFF;"> </td>';
+				}
+				mp += '</tr>';
+			}
+			mp += '</table>';
+			document.getElementById('map').innerHTML = mp;
+		}
+	}
+	function showWeapon(i, j) {
+		let wp = document.getElementById('weapon');
+		let curW = weapon[i][j];
+		wp.innerHTML = `name : ${curW.name}<br>damage : ${curW.damage}<br>pierce damage : ${curW.pierceDamage}<br>range : ${curW.range}<br>startup : ${curW.startup}<br>recovery : ${curW.recovery}`;
+		wp.style.display = 'grid';
+	}
+	function showEnemy(level, type) {
+		isShow++;
+		let wp = document.getElementById('weapon');
+		let e = enemyType[level][type];
+		wp.innerHTML = `name : ${e.name}<br>level : ${levelName[level]}<br>damage : ${e.damage}<br>damage range : ${e.damageRange}<br>health : ${e.health}<br>startup : ${e.startup}<br>recovery : ${e.recovery}<br>exp : ${e.exp}<br>shield : ${e.shield}<br>resistance : ${e.resistance}`;
+		wp.style.display = 'grid';
+		setTimeout(() => {
+			isShow--;
+			if (!isShow)
+				closeEnemy();
+		}, 1000);
+	}
+	function closeWeapon() {
+		document.getElementById('weapon').style.display = 'none';
+	}
+	function closeEnemy() {
+		document.getElementById('weapon').style.display = 'none';
+	}
+	function playerDamage(dmg) {
+		return dmg;
+	}
+	function enemyDamage(dmg, pDmg, id) {
+		let e = enemy[id];
+		let eT = enemyType[e.level][e.type];
+		return Math.round(Math.max(dmg * dmgMul - eT.shield, 0) * (100 - eT.resistance + minRes) / 100 + pDmg * pDmgMul * (100 - eT.resistance / 2 + minRes) / 100);
+	}
+	function playerRecovery(dmg) {
+		atk++;
+		setTimeout(() => {
+			atk--;
+		}, 200 * dmg / health);
+	}
+	function enemyRecovery(dmg, id) {
+		let e = enemy[id];
+		e.isAttack++;
+		setTimeout(() => {
+			e.isAttack--;
+		}, 200 * dmg / e.health);
+	}
+	function move() {
+		if (atk)
+			return;
+		if (posx > 0 && spx < 0 || posx < 900 && spx > 0)
+			posx += spx;
+		if (posy > 0 && spy < 0 || posy < 900 && spy > 0)
+			posy += spy;
+	}
+	function modal(text) {
+		isStart = 0;
+		posx = 8, posy = 8;
+		health = maxHealth;
+		document.getElementById('alert_cover').style.display = 'grid';
+		document.getElementById('alert_text').innerHTML = text;
+	}
+</script>
+
+</html>
