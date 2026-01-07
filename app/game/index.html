@@ -60,7 +60,9 @@
 	</div>
 	<div class="container">
 		<div>
-			<div class="page-container" style="text-align: center; padding: 2vh 1vh; font-size: 2vh;" onclick="modal('按下WASD移动, 空格键攻击. 红色的方块都是你的敌人. 在击杀敌人后你会获得掉落物. 点击装备它们. 合成可以使它们变得更强大. 继续击杀敌人以升级. 天赋点可以让你变强.');">?</div>
+			<div class="page-container" style="text-align: center; padding: 2vh 1vh; font-size: 2vh;"
+				onclick="modal('按下WASD移动, 空格键攻击. 红色的方块都是你的敌人. 在击杀敌人后你会获得掉落物. 点击装备它们. 合成可以使它们变得更强大. 继续击杀敌人以升级. 天赋点可以让你变强.', 0);">
+				?</div>
 			<div class="page-container " style="padding: 1vh; height: 5vh; font-size: 2vh;" id="level"></div>
 			<div class="page-container " style="padding: 2vh 1vh; height: 40vh; font-size: 2vh; overflow: scroll;"
 				id="attribute">
@@ -192,49 +194,49 @@
 	let maxHealth = 100, load = 1, dmgMul = 1, pDmgMul = 1, minRes = 0, healMul = 1, spMul = 1;
 	let enemyType = [
 		[
-			{ name: 'sword', health: 100, sightRange: 40, speed: 0.02, damage: 30, damageRange: 20, startup: 200, recovery: 100, drop: [{ p: 1, type: 0, level: 0 }], exp: 1, shield: 10, resistance: 10 },
-			{ name: 'knife', health: 90, sightRange: 40, speed: 0.03, damage: 20, damageRange: 10, startup: 100, recovery: 100, drop: [{ p: 1, type: 1, level: 0 }], exp: 1, shield: 10, resistance: 10 },
-			{ name: 'spear', health: 120, sightRange: 40, speed: 0.02, damage: 40, damageRange: 30, startup: 100, recovery: 500, drop: [{ p: 1, type: 2, level: 0 }], exp: 1, shield: 10, resistance: 10 }
+			{ name: 'sword', health: 100, sightRange: 40, speed: 0.02, damage: 30, damageRange: 20, startup: 200, recovery: 100, drop: [{ p: 100, type: 0, level: 0 }], exp: 1, shield: 10, resistance: 10 },
+			{ name: 'knife', health: 90, sightRange: 40, speed: 0.03, damage: 20, damageRange: 10, startup: 100, recovery: 100, drop: [{ p: 100, type: 1, level: 0 }], exp: 1, shield: 10, resistance: 10 },
+			{ name: 'spear', health: 120, sightRange: 40, speed: 0.02, damage: 40, damageRange: 30, startup: 100, recovery: 500, drop: [{ p: 100, type: 2, level: 0 }], exp: 1, shield: 10, resistance: 10 }
 		],
 		[
-			{ name: 'sword', health: 500, sightRange: 40, speed: 0.03, damage: 90, damageRange: 21, startup: 180, recovery: 80, drop: [{ p: 0.2, type: 0, level: 0 }, { p: 1, type: 0, level: 1 }], exp: 5, shield: 50, resistance: 20 },
-			{ name: 'knife', health: 400, sightRange: 40, speed: 0.04, damage: 60, damageRange: 11, startup: 90, recovery: 90, drop: [{ p: 0.2, type: 1, level: 0 }, { p: 1, type: 1, level: 1 }], exp: 5, shield: 50, resistance: 20 },
-			{ name: 'spear', health: 600, sightRange: 40, speed: 0.03, damage: 120, damageRange: 31, startup: 80, recovery: 480, drop: [{ p: 0.2, type: 2, level: 0 }, { p: 1, type: 2, level: 1 }], exp: 5, shield: 50, resistance: 20 }
+			{ name: 'sword', health: 500, sightRange: 40, speed: 0.03, damage: 90, damageRange: 21, startup: 180, recovery: 80, drop: [{ p: 50, type: 0, level: 0 }, { p: 50, type: 0, level: 1 }], exp: 5, shield: 50, resistance: 20 },
+			{ name: 'knife', health: 400, sightRange: 40, speed: 0.04, damage: 60, damageRange: 11, startup: 90, recovery: 90, drop: [{ p: 50, type: 1, level: 0 }, { p: 50, type: 1, level: 1 }], exp: 5, shield: 50, resistance: 20 },
+			{ name: 'spear', health: 600, sightRange: 40, speed: 0.03, damage: 120, damageRange: 31, startup: 80, recovery: 480, drop: [{ p: 50, type: 2, level: 0 }, { p: 50, type: 2, level: 1 }], exp: 5, shield: 50, resistance: 20 }
 		],
 		[
-			{ name: 'sword', health: 2500, sightRange: 40, speed: 0.04, damage: 270, damageRange: 22, startup: 160, recovery: 60, drop: [{ p: 0.1, type: 0, level: 0 }, { p: 0.4, type: 0, level: 1 }, { p: 1, type: 0, level: 2 }], exp: 25, shield: 250, resistance: 30 },
-			{ name: 'knife', health: 2000, sightRange: 40, speed: 0.05, damage: 180, damageRange: 12, startup: 85, recovery: 85, drop: [{ p: 0.1, type: 1, level: 0 }, { p: 0.4, type: 1, level: 1 }, { p: 1, type: 1, level: 2 }], exp: 25, shield: 250, resistance: 30 },
-			{ name: 'spear', health: 3000, sightRange: 40, speed: 0.04, damage: 360, damageRange: 32, startup: 60, recovery: 460, drop: [{ p: 0.1, type: 2, level: 0 }, { p: 0.4, type: 2, level: 1 }, { p: 1, type: 2, level: 2 }], exp: 25, shield: 250, resistance: 30 }
+			{ name: 'sword', health: 2500, sightRange: 40, speed: 0.04, damage: 270, damageRange: 22, startup: 160, recovery: 60, drop: [{ p: 10, type: 0, level: 0 }, { p: 40, type: 0, level: 1 }, { p: 50, type: 0, level: 2 }], exp: 25, shield: 250, resistance: 30 },
+			{ name: 'knife', health: 2000, sightRange: 40, speed: 0.05, damage: 180, damageRange: 12, startup: 85, recovery: 85, drop: [{ p: 10, type: 1, level: 0 }, { p: 40, type: 1, level: 1 }, { p: 50, type: 1, level: 2 }], exp: 25, shield: 250, resistance: 30 },
+			{ name: 'spear', health: 3000, sightRange: 40, speed: 0.04, damage: 360, damageRange: 32, startup: 60, recovery: 460, drop: [{ p: 10, type: 2, level: 0 }, { p: 40, type: 2, level: 1 }, { p: 50, type: 2, level: 2 }], exp: 25, shield: 250, resistance: 30 }
 		],
 		[
-			{ name: 'sword', health: 12500, sightRange: 40, speed: 0.05, damage: 810, damageRange: 23, startup: 150, recovery: 50, drop: [{ p: 0.1, type: 0, level: 1 }, { p: 0.6, type: 0, level: 2 }, { p: 1, type: 0, level: 3 }], exp: 125, shield: 1250, resistance: 40 },
-			{ name: 'knife', health: 10000, sightRange: 40, speed: 0.06, damage: 540, damageRange: 13, startup: 80, recovery: 80, drop: [{ p: 0.1, type: 1, level: 1 }, { p: 0.6, type: 1, level: 2 }, { p: 1, type: 1, level: 3 }], exp: 125, shield: 1250, resistance: 40 },
-			{ name: 'spear', health: 15000, sightRange: 40, speed: 0.05, damage: 1080, damageRange: 33, startup: 50, recovery: 450, drop: [{ p: 0.1, type: 2, level: 1 }, { p: 0.6, type: 2, level: 2 }, { p: 1, type: 2, level: 3 }], exp: 125, shield: 1250, resistance: 40 }
+			{ name: 'sword', health: 12500, sightRange: 40, speed: 0.05, damage: 810, damageRange: 23, startup: 150, recovery: 50, drop: [{ p: 5, type: 0, level: 1 }, { p: 80, type: 0, level: 2 }, { p: 15, type: 0, level: 3 }], exp: 125, shield: 1250, resistance: 40 },
+			{ name: 'knife', health: 10000, sightRange: 40, speed: 0.06, damage: 540, damageRange: 13, startup: 80, recovery: 80, drop: [{ p: 5, type: 1, level: 1 }, { p: 80, type: 1, level: 2 }, { p: 15, type: 1, level: 3 }], exp: 125, shield: 1250, resistance: 40 },
+			{ name: 'spear', health: 15000, sightRange: 40, speed: 0.05, damage: 1080, damageRange: 33, startup: 50, recovery: 450, drop: [{ p: 5, type: 2, level: 1 }, { p: 80, type: 2, level: 2 }, { p: 15, type: 2, level: 3 }], exp: 125, shield: 1250, resistance: 40 }
 		],
 		[
-			{ name: 'sword', health: 62500, sightRange: 40, speed: 0.06, damage: 2430, damageRange: 24, startup: 140, recovery: 40, drop: [{ p: 0.1, type: 0, level: 2 }, { p: 0.8, type: 0, level: 3 }, { p: 1, type: 0, level: 4 }], exp: 625, shield: 6250, resistance: 50 },
-			{ name: 'knife', health: 50000, sightRange: 40, speed: 0.07, damage: 1620, damageRange: 14, startup: 80, recovery: 80, drop: [{ p: 0.1, type: 1, level: 2 }, { p: 0.8, type: 1, level: 3 }, { p: 1, type: 1, level: 4 }], exp: 625, shield: 6250, resistance: 50 },
-			{ name: 'spear', health: 75000, sightRange: 40, speed: 0.06, damage: 3240, damageRange: 34, startup: 50, recovery: 440, drop: [{ p: 0.1, type: 2, level: 2 }, { p: 0.8, type: 2, level: 3 }, { p: 1, type: 2, level: 4 }], exp: 625, shield: 6250, resistance: 50 }
+			{ name: 'sword', health: 62500, sightRange: 40, speed: 0.06, damage: 2430, damageRange: 24, startup: 140, recovery: 40, drop: [{ p: 14, type: 0, level: 2 }, { p: 80, type: 0, level: 3 }, { p: 6, type: 0, level: 4 }], exp: 700, shield: 6250, resistance: 50 },
+			{ name: 'knife', health: 50000, sightRange: 40, speed: 0.07, damage: 1620, damageRange: 14, startup: 80, recovery: 80, drop: [{ p: 14, type: 1, level: 2 }, { p: 80, type: 1, level: 3 }, { p: 6, type: 1, level: 4 }], exp: 700, shield: 6250, resistance: 50 },
+			{ name: 'spear', health: 75000, sightRange: 40, speed: 0.06, damage: 3240, damageRange: 34, startup: 50, recovery: 440, drop: [{ p: 14, type: 2, level: 2 }, { p: 80, type: 2, level: 3 }, { p: 6, type: 2, level: 4 }], exp: 700, shield: 6250, resistance: 50 }
 		],
 		[
-			{ name: 'sword', health: 312500, sightRange: 40, speed: 0.07, damage: 7290, damageRange: 25, startup: 130, recovery: 30, drop: [{ p: 0.1, type: 0, level: 3 }, { p: 0.85, type: 0, level: 4 }, { p: 1, type: 0, level: 5 }], exp: 3750, shield: 31250, resistance: 60 },
-			{ name: 'knife', health: 250000, sightRange: 40, speed: 0.08, damage: 4860, damageRange: 15, startup: 78, recovery: 78, drop: [{ p: 0.1, type: 1, level: 3 }, { p: 0.85, type: 1, level: 4 }, { p: 1, type: 1, level: 5 }], exp: 3750, shield: 31250, resistance: 60 },
-			{ name: 'spear', health: 225000, sightRange: 40, speed: 0.07, damage: 9720, damageRange: 35, startup: 40, recovery: 430, drop: [{ p: 0.1, type: 2, level: 3 }, { p: 0.85, type: 2, level: 4 }, { p: 1, type: 2, level: 5 }], exp: 3750, shield: 31250, resistance: 60 }
+			{ name: 'sword', health: 312500, sightRange: 40, speed: 0.07, damage: 7290, damageRange: 25, startup: 130, recovery: 30, drop: [{ p: 9, type: 0, level: 3 }, { p: 90, type: 0, level: 4 }, { p: 1, type: 0, level: 5 }], exp: 4000, shield: 31250, resistance: 60 },
+			{ name: 'knife', health: 250000, sightRange: 40, speed: 0.08, damage: 4860, damageRange: 15, startup: 78, recovery: 78, drop: [{ p: 9, type: 1, level: 3 }, { p: 90, type: 1, level: 4 }, { p: 1, type: 1, level: 5 }], exp: 4000, shield: 31250, resistance: 60 },
+			{ name: 'spear', health: 225000, sightRange: 40, speed: 0.07, damage: 9720, damageRange: 35, startup: 40, recovery: 430, drop: [{ p: 9, type: 2, level: 3 }, { p: 90, type: 2, level: 4 }, { p: 1, type: 2, level: 5 }], exp: 4000, shield: 31250, resistance: 60 }
 		],
 		[
-			{ name: 'sword', health: 1562500, sightRange: 40, speed: 0.08, damage: 21870, damageRange: 26, startup: 130, recovery: 30, drop: [{ p: 0.1, type: 0, level: 4 }, { p: 0.9, type: 0, level: 5 }, { p: 1, type: 0, level: 6 }], exp: 26250, shield: 156250, resistance: 70 },
-			{ name: 'knife', health: 1250000, sightRange: 40, speed: 0.09, damage: 14580, damageRange: 16, startup: 78, recovery: 78, drop: [{ p: 0.1, type: 1, level: 4 }, { p: 0.9, type: 1, level: 5 }, { p: 1, type: 1, level: 6 }], exp: 26250, shield: 156250, resistance: 70 },
-			{ name: 'spear', health: 1125000, sightRange: 40, speed: 0.08, damage: 29160, damageRange: 36, startup: 40, recovery: 430, drop: [{ p: 0.1, type: 2, level: 4 }, { p: 0.9, type: 2, level: 5 }, { p: 1, type: 2, level: 6 }], exp: 26250, shield: 156250, resistance: 70 }
+			{ name: 'sword', health: 1562500, sightRange: 40, speed: 0.08, damage: 21870, damageRange: 26, startup: 130, recovery: 30, drop: [{ p: 4.5, type: 0, level: 4 }, { p: 95, type: 0, level: 5 }, { p: 0.5, type: 0, level: 6 }], exp: 25000, shield: 156250, resistance: 70 },
+			{ name: 'knife', health: 1250000, sightRange: 40, speed: 0.09, damage: 14580, damageRange: 16, startup: 78, recovery: 78, drop: [{ p: 4.5, type: 1, level: 4 }, { p: 95, type: 1, level: 5 }, { p: 0.5, type: 1, level: 6 }], exp: 25000, shield: 156250, resistance: 70 },
+			{ name: 'spear', health: 1125000, sightRange: 40, speed: 0.08, damage: 29160, damageRange: 36, startup: 40, recovery: 430, drop: [{ p: 4.5, type: 2, level: 4 }, { p: 95, type: 2, level: 5 }, { p: 0.5, type: 2, level: 6 }], exp: 25000, shield: 156250, resistance: 70 }
 		],
 		[
-			{ name: 'sword', health: 15625000, sightRange: 45, speed: 0.1, damage: 65610, damageRange: 26, startup: 110, recovery: 30, drop: [{ p: 0.1, type: 0, level: 5 }, { p: 0.94, type: 0, level: 6 }, { p: 1, type: 0, level: 7 }], exp: 236250, shield: 781250, resistance: 80 },
-			{ name: 'knife', health: 12500000, sightRange: 45, speed: 0.12, damage: 43740, damageRange: 16, startup: 70, recovery: 70, drop: [{ p: 0.1, type: 1, level: 5 }, { p: 0.94, type: 1, level: 6 }, { p: 1, type: 1, level: 7 }], exp: 236250, shield: 781250, resistance: 80 },
-			{ name: 'spear', health: 11250000, sightRange: 45, speed: 0.1, damage: 87480, damageRange: 36, startup: 40, recovery: 400, drop: [{ p: 0.1, type: 2, level: 5 }, { p: 0.94, type: 2, level: 6 }, { p: 1, type: 2, level: 7 }], exp: 236250, shield: 781250, resistance: 80 }
+			{ name: 'sword', health: 15625000, sightRange: 45, speed: 0.1, damage: 65610, damageRange: 26, startup: 110, recovery: 30, drop: [{ p: 15.7, type: 0, level: 5 }, { p: 84, type: 0, level: 6 }, { p: 0.3, type: 0, level: 7 }], exp: 114514, shield: 781250, resistance: 80 },
+			{ name: 'knife', health: 12500000, sightRange: 45, speed: 0.12, damage: 43740, damageRange: 16, startup: 70, recovery: 70, drop: [{ p: 15.7, type: 1, level: 5 }, { p: 84, type: 1, level: 6 }, { p: 0.3, type: 1, level: 7 }], exp: 114514, shield: 781250, resistance: 80 },
+			{ name: 'spear', health: 11250000, sightRange: 45, speed: 0.1, damage: 87480, damageRange: 36, startup: 40, recovery: 400, drop: [{ p: 15.7, type: 2, level: 5 }, { p: 84, type: 2, level: 6 }, { p: 0.3, type: 2, level: 7 }], exp: 114514, shield: 781250, resistance: 80 }
 		],
 		[
-			{ name: 'sword', health: 156250000, sightRange: 50, speed: 0.12, damage: 65610, damageRange: 26, startup: 110, recovery: 30, drop: [{ p: 0.96, type: 0, level: 7 }, { p: 1, type: 0, level: 8 }], exp: 2362500, shield: 7812500, resistance: 90 },
-			{ name: 'knife', health: 125000000, sightRange: 50, speed: 0.14, damage: 43740, damageRange: 16, startup: 70, recovery: 70, drop: [{ p: 0.96, type: 1, level: 7 }, { p: 1, type: 1, level: 8 }], exp: 2362500, shield: 7812500, resistance: 90 },
-			{ name: 'spear', health: 112500000, sightRange: 50, speed: 0.12, damage: 87480, damageRange: 36, startup: 40, recovery: 400, drop: [{ p: 0.96, type: 2, level: 7 }, { p: 1, type: 2, level: 8 }], exp: 2362500, shield: 7812500, resistance: 90 }
+			{ name: 'sword', health: 156250000, sightRange: 50, speed: 0.12, damage: 65610, damageRange: 26, startup: 110, recovery: 30, drop: [{ p: 97.7, type: 0, level: 7 }, { p: 0.3, type: 0, level: 8 }], exp: 1234567, shield: 781250, resistance: 90 },
+			{ name: 'knife', health: 125000000, sightRange: 50, speed: 0.14, damage: 43740, damageRange: 16, startup: 70, recovery: 70, drop: [{ p: 97.7, type: 1, level: 7 }, { p: 0.3, type: 1, level: 8 }], exp: 1234567, shield: 781250, resistance: 90 },
+			{ name: 'spear', health: 112500000, sightRange: 50, speed: 0.12, damage: 87480, damageRange: 36, startup: 40, recovery: 400, drop: [{ p: 97.7, type: 2, level: 7 }, { p: 0.3, type: 2, level: 8 }], exp: 1234567, shield: 781250, resistance: 90 }
 		]
 	], enemy = [];
 	let weapon = [[
@@ -278,6 +280,7 @@
 		body.innerHTML += `<center><div style="display: none; position: fixed; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(200, 200, 200, 0.1); color: black;" id="alert_cover"><span style="border-radius: 2vh; padding: 3vh; width: 40%; position: fixed; top: 0.5vw; left: 30%; background-color: rgb(240, 240, 240);" class="page-container " id="alert_container"><span id="alert_text">text</span><br><span style="float: right; height: 4vh; width: 8vh; border-radius: 0.5vh; color: rgb(0, 200, 0);" class="hover" id="alert_confirm">确认</span></span></div></center>`;
 		document.getElementById('alert_confirm').onclick = () => {
 			isStart = 1;
+			atk = 0;
 			posx = 8, posy = 8;
 			health = maxHealth;
 			document.getElementById('alert_cover').style.display = 'none';
@@ -301,10 +304,8 @@
 		// 	modal('Press WASD to MOVE, Space to ATTACK. The red squares are your enemies. You\'ll get the weapons after you kill them. Click to equip one of the weapons. Merge to make them stronger. Keep killing the enemies to level up. Talent Points can make you powerful.<br>按下WASD移动, 空格键攻击. 红色的方块都是你的敌人. 在击杀敌人后你会获得掉落物. 点击装备它们. 合成可以使它们变得更强大. 继续击杀敌人以升级. 天赋点可以让你变强.');
 		weaponType = await get('wT', 0);
 		weaponLevel = await get('wL', 0);
+		init();
 		generateEnemy();
-		updateDrop();
-		updateLevel();
-		updateTp();
 		start();
 		setInterval(() => {
 			if (isStart)
@@ -322,13 +323,13 @@
 			else
 				wp = 1;
 			if (e.key == 'w' && spx >= 0)
-				spx -= sp * spMul * wait * wp;
+				spx -= sp * wait;
 			if (e.key == 'a' && spy >= 0)
-				spy -= sp * spMul * wait * wp;
+				spy -= sp * wait;
 			if (e.key == 's' && spx <= 0)
-				spx += sp * spMul * wait * wp;
+				spx += sp * wait;
 			if (e.key == 'd' && spy <= 0)
-				spy += sp * spMul * wait * wp;
+				spy += sp * wait;
 			if (e.key == ' ' && !atk) {
 				atk++;
 				if (isStart)
@@ -337,15 +338,34 @@
 		}
 		document.onkeyup = (e) => {
 			if (e.key == 'w')
-				spx += sp * spMul * wait * wp;
+				spx += sp * wait;
 			if (e.key == 'a')
-				spy += sp * spMul * wait * wp;
+				spy += sp * wait;
 			if (e.key == 's')
-				spx -= sp * spMul * wait * wp;
+				spx -= sp * wait;
 			if (e.key == 'd')
-				spy -= sp * spMul * wait * wp;
+				spy -= sp * wait;
 		}
 	})();
+	function init() {
+		let dr = document.getElementById('drop');
+		dr.innerHTML = '<span style="border-radius: 1vh; padding: 1vh 2vh; margin-top: 1vh; line-height: 5.5vh; font-size: 2.5vh;" onclick="mergeWeapon()" class="hover page-container unselectable ">merge</span><br>';
+		for (let i = 0; i < 3; i++) {
+			dr.innerHTML += `<div class="page-container unselectable " style="border-radius: 1vh; padding: 1vh 0.1vh; margin-top: 1vh; line-height: 3vh; font-size: 2.5vh; display: inline-grid; width: 8vh; text-align: center;">${weapon[i][0].name}</div>`;
+			for (let j = 0; j < 9; j++) {
+				dr.innerHTML += `<span id="drop${i}${j}" style="border: 0.4vh solid rgba(0, 0, 0, 0); border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon(${i}, ${j})">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
+			}
+			dr.innerHTML += '<br>';
+		}
+		document.getElementById(`drop${weaponType}${weaponLevel}`).style.border = '0.4vh solid black';
+		let lExp = parseInt(calExp(level));
+		while (exp >= lExp) {
+			level++, exp -= lExp;
+			lExp = parseInt(calExp(level));
+		}
+		document.getElementById('level').innerHTML = `level : ${level}<br>exp : ${exp}/${calExp(level)}`;
+		updateTp();
+	}
 	async function initGet() {
 		let resp;
 		await fetch(`${url}data/game`, {
@@ -374,7 +394,7 @@
 	// 	localStorage.setItem(id, value);
 	// }
 	async function get(key, init) {
-		if (gameData[key]) {
+		if (gameData[key] != undefined) {
 			return parseInt(gameData[key]);
 		}
 		else {
@@ -440,7 +460,8 @@
 					kill(i);
 			}
 			setTimeout(() => {
-				atk--;
+				if (atk > 0)
+					atk--;
 			}, curW.recovery * load);
 		}, curW.startup * load);
 	}
@@ -501,7 +522,7 @@
 					health = 0;
 					isStart = 0;
 					setTimeout(() => {
-						modal('You die!<br>你死了!');
+						modal('You die!<br>你死了!', 1);
 					}, 100)
 				}
 			}
@@ -518,6 +539,8 @@
 	}
 	async function setWeapon(i, j) {
 		if (drop[i][j]) {
+			document.getElementById(`drop${weaponType}${weaponLevel}`).style.border = '0.4vh solid rgba(0, 0, 0, 0)';
+			document.getElementById(`drop${i}${j}`).style.border = '0.4vh solid black';
 			weaponType = i;
 			weaponLevel = j;
 			await post('wT', i);
@@ -539,9 +562,11 @@
 		let dr = 0;
 		let e = enemy[id];
 		let eT = enemyType[e.level][e.type];
-		for (; ; dr++) {
-			let rd = Math.random();
-			if (rd <= eT.drop[dr].p)
+		let s = 0;
+		let rd = Math.random();
+		for (; dr < eT.drop.length; dr++) {
+			s += eT.drop[dr].p;
+			if (rd <= s)
 				break;
 		}
 		drop[eT.drop[dr].type][eT.drop[dr].level]++;
@@ -570,7 +595,7 @@
 		for (let i = 0; i < 3; i++) {
 			dr.innerHTML += `<div class="page-container unselectable " style="border-radius: 1vh; padding: 1vh 0.1vh; margin-top: 1vh; line-height: 3vh; font-size: 2.5vh; display: inline-grid; width: 8vh; text-align: center;">${weapon[i][0].name}</div>`;
 			for (let j = 0; j < 9; j++) {
-				dr.innerHTML += `<span style="border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon()">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
+				dr.innerHTML += `<span id="drop${i}${j}" style="border: 0.4vh solid rgba(0, 0, 0, 0); border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon(${i}, ${j})">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
 			}
 			dr.innerHTML += '<br>';
 		}
@@ -584,7 +609,7 @@
 		for (let i = 0; i < 3; i++) {
 			dr.innerHTML += `<div class="page-container unselectable " style="border-radius: 1vh; padding: 1vh 0.1vh; margin-top: 1vh; line-height: 3vh; font-size: 2.5vh; display: inline-grid; width: 8vh; text-align: center;">${weapon[i][0].name}</div>`;
 			for (let j = 0; j < 9; j++) {
-				dr.innerHTML += `<span style="border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon()">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
+				dr.innerHTML += `<span id="drop${i}${j}" style="border: 0.4vh solid rgba(0, 0, 0, 0); border-radius: 1vh; padding: 1vh 0.2vh; margin: 1vh 1vh; line-height: 5.5vh; background-color: ${color[j]}; font-size: 2.5vh;" onclick="setWeapon(${i}, ${j})" class="hover page-container  unselectable" onmouseenter="showWeapon(${i}, ${j})" onmouseleave="closeWeapon(${i}, ${j})">${drop[i][j]}${j != 8 ? '/' + (1 << (j + 1)) : ''}</span>`;
 			}
 			dr.innerHTML += '<br>';
 		}
@@ -596,10 +621,10 @@
 			level++, exp -= lExp;
 			lExp = parseInt(calExp(level));
 		}
+		document.getElementById('level').innerHTML = `level : ${level}<br>exp : ${exp}/${calExp(level)}`;
 		updateTp();
 		await post('level', level);
 		await post('exp', exp);
-		document.getElementById('level').innerHTML = `level : ${level}<br>exp : ${exp}/${calExp(level)}`;
 	}
 	function generateEnemy() {
 		let sx = [0, 0, 0, 300, 300, 300, 600, 600, 600], sy = [0, 300, 600, 600, 300, 0, 0, 300, 600]
@@ -673,6 +698,7 @@
 		let curW = weapon[i][j];
 		wp.innerHTML = `name : ${curW.name}<br>damage : ${curW.damage}<br>pierce damage : ${curW.pierceDamage}<br>range : ${curW.range}<br>startup : ${curW.startup}<br>recovery : ${curW.recovery}`;
 		wp.style.display = 'grid';
+		document.getElementById(`drop${i}${j}`).style.backgroundColor = 'rgb(226, 226, 226)';
 	}
 	function showEnemy(level, type) {
 		isShow++;
@@ -686,8 +712,9 @@
 				closeEnemy();
 		}, 1000);
 	}
-	function closeWeapon() {
+	function closeWeapon(i, j) {
 		document.getElementById('weapon').style.display = 'none';
+		document.getElementById(`drop${i}${j}`).style.backgroundColor = color[j];
 	}
 	function closeEnemy() {
 		document.getElementById('weapon').style.display = 'none';
@@ -703,7 +730,8 @@
 	function playerRecovery(dmg) {
 		atk++;
 		setTimeout(() => {
-			atk--;
+			if (atk > 0)
+				atk--;
 		}, 200 * dmg / health);
 	}
 	function enemyRecovery(dmg, id) {
@@ -716,12 +744,20 @@
 	function move() {
 		if (atk)
 			return;
-		if (posx > 0 && spx < 0 || posx < 900 && spx > 0)
-			posx += spx;
-		if (posy > 0 && spy < 0 || posy < 900 && spy > 0)
-			posy += spy;
+		if (posx > 0 && spx < 0 || posx < 900 && spx > 0) {
+			if (spy != 0)
+				posx += spx * spMul * wp * 0.707;
+			else
+				posx += spx * spMul * wp
+		}
+		if (posy > 0 && spy < 0 || posy < 900 && spy > 0) {
+			if (spx != 0)
+				posy += spy * spMul * wp * 0.707;
+			else
+				posy += spy * spMul * wp;
+		}
 	}
-	function modal(text) {
+	function modal(text, isRestart) {
 		isStart = 0;
 		posx = 8, posy = 8;
 		health = maxHealth;
