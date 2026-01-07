@@ -565,7 +565,7 @@
 		let s = 0;
 		let rd = Math.random();
 		for (; dr < eT.drop.length; dr++) {
-			s += eT.drop[dr].p;
+			s += eT.drop[dr].p / 100;
 			if (rd <= s)
 				break;
 		}
